@@ -20,13 +20,13 @@ public:
     void removeItem(int itemIndex);
     void removeItem(const std::string& name);
     void renameItem(int itemIndex, const std::string& newName);
-    void changePosition(int itemIndex)
+    void changePosition(int itemIndex);
 
     void renameItem(const std::string& name, const std::string& newName);
 
 private:
     int pageNumber;
-    std::vector<Item> items;
+    std::vector<Item> *items;
 
     void nameRepeatingCheck(std::string name); 
     size_t findMaxOrder();
