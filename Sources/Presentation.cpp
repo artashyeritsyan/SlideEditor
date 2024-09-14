@@ -72,7 +72,7 @@ void Presentation::moveSlide(int slideId, int newPosition)
     newPosition--;
 
     if (slideId < 0 || slideId >= slides.size() || newPosition < 0 || newPosition >= slides.size()) {
-        std::cerr << "Invalid Slide Id or new Slide Position!" << std::endl;
+        std::cerr << "Invalid Slide Id or slide new Position!" << std::endl;
         return;
     }
 
