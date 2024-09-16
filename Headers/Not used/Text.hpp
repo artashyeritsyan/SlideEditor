@@ -42,8 +42,9 @@ private:
     int textSize = 9;
     std::string font = "Arial";
     AlignTypeEnum alignment = Center;
-    RGB color;  
-    RGB highlightColor;  
+
+    RGB color;
+    RGB highlightColor;
 
     bool italic = false;
     bool bold = false; 

@@ -18,6 +18,7 @@ public:
 
     // Command functions
     // TODO: Write an implementation for this functions 
+    int slidesCount();
     void addSlide(int index = NULL);
     void removeSlide(int slideId);
     void nextSlide();
@@ -29,6 +30,7 @@ public:
 
     std::string getName() const;
     void setName(const std::string& value);
+    int getCurrentSlideIndex();
 
 private:
     std::string name;

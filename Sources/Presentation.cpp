@@ -31,14 +31,15 @@
 
 // };
 
-void Presentation::addSlide(int index = 0) {
+int Presentation::slidesCount()
+{
+    slides.size();
+}
+
+void Presentation::addSlide(int index)
+{
     Slide newSlide;
-    if (!index) {
-        slides.push_back(newSlide);
-    }
-    else {
-        slides.insert(slides.begin() + (index - 1), newSlide);
-    }
+    slides.insert(slides.begin() + index, newSlide);
 }
 
 void Presentation::removeSlide(int slideId) {
@@ -108,4 +109,9 @@ std::string Presentation::getName() const
 void Presentation::setName(const std::string &value)
 {
     name = value;
+}
+
+int Presentation::getCurrentSlideIndex()
+{
+    return currentSlideIndex;
 }

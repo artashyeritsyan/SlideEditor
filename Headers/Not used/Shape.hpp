@@ -12,16 +12,13 @@ public:
           const std::pair<int, int>& position)
         : Item(name, type, layerOrder, position) {}
     
-
-
+    
     RGB getColor() const;
     RGB getOutlineColor() const;
-
 
     void setColor(RGB& value);
     void setOutlineColor(RGB& value);
 
-    
 private:
 
     RGB color;          //
