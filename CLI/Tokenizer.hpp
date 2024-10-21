@@ -1,24 +1,12 @@
 #ifndef TOKENIZER_HPP
 #define TOKENIZER_HPP
 
-#include <iostream>
 #include <sstream>
 #include <string>
+#include <memory>
 
-enum class TokenType {
-    WORD,
-    FLAG,
-    VALUE,
-    END
-};
+#include "Token.hpp"
 
-struct SToken {
-public:
-    TokenType type;
-    std::string value;
-
-    SToken(TokenType type, const std::string& value) : type(type), value(value) {}
-};
 
 class Tokenizer {
 private:
@@ -27,14 +15,16 @@ private:
 
 public:
     Tokenizer(std::stringstream& input);
-    SToken nextToken();
+    std::unique_ptr<SToken> nextToken();
 
 private:
     void nextChar();
 
-    SToken parseFlag();
-    SToken parseValue();
-    SToken parseWord();
+    std::unique_ptr<SToken> parseFlag();
+    std::unique_ptr<SToken> parseValue();
+    std::unique_ptr<SToken> parseWord();
+
+    bool isFlagPassed;
 };
 
 #endif // TOKENIZER_HPP

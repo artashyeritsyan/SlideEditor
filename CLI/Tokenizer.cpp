@@ -1,64 +1,67 @@
 #include "Tokenizer.hpp"
 
 Tokenizer::Tokenizer(std::stringstream& input) : inputStream(input) {
-        nextChar();
-    }
+    nextChar();
+}
 
-SToken Tokenizer::nextToken() {
+std::unique_ptr<SToken> Tokenizer::nextToken() {
     while (inputStream) {
         if (isspace(currentChar)) {
             nextChar();
             continue;
         }
-
-        if (currentChar == '-') {
-            nextChar();
-            return parseFlag();
-        }
-
-        if (isdigit(currentChar)) {
-            return parseValue();
-        }
-
-        if (isalpha(currentChar)) {
+        else if (currentChar >= 97 && currentChar <= 122 && !isFlagPassed) {
             return parseWord();
+        }
+        else if (currentChar == '-') {
+            nextChar();
+            isFlagPassed = true;
+            return parseFlag();
+        } 
+        else if (isalnum(currentChar)) {
+            return parseValue();
         }
         
     }
-    return SToken(TokenType::END, "");
+    return std::make_unique<SToken>(ETokenType::END, "");
 }
 
 void Tokenizer::nextChar() {
         inputStream.get(currentChar);
     }
 
-SToken Tokenizer::parseFlag() {
+std::unique_ptr<SToken> Tokenizer::parseFlag() {
     std::string flagStr;
-    while (inputStream && (currentChar >= 97 || currentChar <= 122)) {
+    while (inputStream && (currentChar >= 97 && currentChar <= 122)) {
         flagStr += currentChar;
         nextChar();
     }
-    return SToken(TokenType::FLAG, flagStr);
+    return std::make_unique<SToken>(ETokenType::FLAG, flagStr);
 }
 
-SToken Tokenizer::parseValue() {
+std::unique_ptr<SToken> Tokenizer::parseValue() {
     std::string valueStr;
     while (inputStream && !isspace(currentChar)) {
         valueStr += currentChar;
         nextChar();
     }
-    return SToken(TokenType::VALUE, valueStr);
+    return std::make_unique<SToken>(ETokenType::VALUE, valueStr);
 }
 
-SToken Tokenizer::parseWord() {
+std::unique_ptr<SToken> Tokenizer::parseWord() {
     std::string wordStr;
-    while (inputStream && (currentChar >= 97 || currentChar <= 122)) {
+    while (inputStream && (currentChar >= 97 && currentChar <= 122)) {
         wordStr += currentChar;
         nextChar();
     }
-    return SToken(TokenType::WORD, wordStr);
+    return std::make_unique<SToken>(ETokenType::WORD, wordStr);
 }
 
-
-
-    
+std::string SToken::getTypeString() const {
+    switch (type) {
+        case ETokenType::WORD:  return "WORD";
+        case ETokenType::FLAG:  return "FLAG";
+        case ETokenType::VALUE: return "VALUE";
+        default: return "END";
+    }
+}

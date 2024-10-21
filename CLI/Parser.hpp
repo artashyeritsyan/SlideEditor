@@ -1,8 +1,12 @@
-#include "SyntaxAnalyzer.hpp" 
+#include "SyntaxAnalyzer.hpp"
+#include <memory>
 
 class Parser {
 public:
-    Parser (std::stringstream &input);
+    Parser ();
 
-    parse()
+    void parse(std::stringstream &input);
+
+private:
+    std::unique_ptr<SyntaxAnalyzer> syntaxAnalyzer;
 };

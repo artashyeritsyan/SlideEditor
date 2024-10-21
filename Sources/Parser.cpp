@@ -32,3 +32,4 @@ Command Command::parseCommand(const std::string& input) {
 
     return cmd;
 }
+
