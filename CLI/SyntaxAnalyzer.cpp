@@ -4,7 +4,7 @@ SyntaxAnalyzer::SyntaxAnalyzer() {
    createCheckingMap();
 }
 
-strVectorInMap SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
+std::unique_ptr<CommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
 {
     tokenizer = new Tokenizer(input);
     std::vector<std::unique_ptr<SToken>> tokens;
@@ -46,24 +46,28 @@ strVectorInMap SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
     return checkCommandCorrectness(tokens);    
 }
 
-strVectorInMap SyntaxAnalyzer::checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens) {
+std::unique_ptr<CommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens) {
 
     std::unordered_map<std::string, std::unordered_map<std::string, std::vector<std::string>>> commandMap;
     std::string cmd = tokens[0]->value;
-    std::string flag;
-    std::string value;
-    int i = 1;
 
-    if (tokens[0]->type == ETokenType::WORD && tokens[1]->type == ETokenType::WORD) {
-        cmd = tokens[0]->getTypeString() + tokens[1]->getTypeString();
-        i = 2;
+
+    std::unique_ptr<CommandInfo> cmdInfo = std::make_unique<CommandInfo>();
+    
+    int i = 0;
+    while (tokens[i]->type == ETokenType::WORD && i < tokens.size()) {
+        cmdInfo->name += tokens[i++]->value;
     }
-    if (checkingMap.find(cmd) == checkingMap.end()) {
+
+    if (commandRules.find(cmd) == commandRules.end()) {
         std::cerr << "Invalid command" << std::endl;
         // throw an exception
     }
 
+    std::string flag;
+    std::string value;
     while(i < tokens.size()) {
+
         if(tokens[i]->type == ETokenType::FLAG) {
             flag = tokens[i]->value;
         }
@@ -71,12 +75,13 @@ strVectorInMap SyntaxAnalyzer::checkCommandCorrectness(std::vector<std::unique_p
             value = tokens[i]->value;
         }
 
-        if(checkingMap[cmd][flag](value)) {
-            commandMap[cmd][flag].push_back(value);
+        if(commandRules[cmd][flag](value)) {
+            cmdInfo->arguments[flag].push_back(value);
         }
+
     }
 
-    return commandMap;
+    return cmdInfo;
 }
 
 void SyntaxAnalyzer::createCheckingMap()

@@ -8,20 +8,20 @@
 #include "Tokenizer.hpp"
 #include "Command.hpp"
 
-using strVectorInMap = std::unordered_map<std::string, std::unordered_map<std::string, std::vector<std::string>>>;
+using ValueCheckingMap = std::unordered_map<std::string, std::unordered_map<std::string, std::function<bool(const std::string)>>>;
 
 class SyntaxAnalyzer {
 public:
     SyntaxAnalyzer();
-    strVectorInMap startSyntaxAnalize(std::stringstream& input);
+    std::unique_ptr<CommandInfo> startSyntaxAnalize(std::stringstream& input);
 
 private:
     Tokenizer* tokenizer;
-    std::unordered_map<std::string, std::unordered_map<std::string, std::function<bool(const std::string)>>> checkingMap;
+    ValueCheckingMap commandRules;
 
 private:
 
-    strVectorInMap checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens);
+    std::unique_ptr<CommandInfo> checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens);
     void createCheckingMap();
 
     bool isPosition(const std::string& value);
