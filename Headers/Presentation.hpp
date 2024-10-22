@@ -5,16 +5,12 @@
 
 #include "Slide.hpp"
 
-using json = nlohmann::json;
-
 class Presentation {
 public:
     Presentation();
     Presentation(const std::string& name, const std::vector<Slide>& slides)
         : name(name), slides(slides) {}
 
-    
-    static Presentation fromJSON(const json& jsonData);
 
     // Command functions
     // TODO: Write an implementation for this functions 
