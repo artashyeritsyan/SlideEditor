@@ -1,6 +1,6 @@
 #include "Controller.hpp"
 
-void Controller::addSlide(int slideId = 0)
+void ControllerOld::addSlide(int slideId = 0)
 {
     if(slideId == 0) {
         pres->addSlide(pres->slidesCount());
@@ -10,17 +10,17 @@ void Controller::addSlide(int slideId = 0)
     }
 }
 
-void Controller::removeSlide(int slideId)
+void ControllerOld::removeSlide(int slideId)
 {
     pres->removeSlide(--slideId);
 }
 
-void Controller::openNextSlide()
+void ControllerOld::openNextSlide()
 {
     pres->nextSlide();
 }
 
-void Controller::openPrevSlide()
+void ControllerOld::openPrevSlide()
 {
     pres->prevSlide();
 }

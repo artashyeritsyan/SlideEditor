@@ -1,9 +1,8 @@
-#pragma once
-#include <vector>
-#include <string>
-#include <iostream>
+#ifndef PRESENTATION_HPP
+#define PRESENTATION_HPP
 
 #include "Slide.hpp"
+#include "Item.hpp"
 
 class Presentation {
 public:
@@ -12,7 +11,7 @@ public:
         : name(name), slides(slides) {}
 
     // Command functions
-    // TODO: Write an implementation for this functions 
+    /// TODO: Write an implementation for this functions 
     int slidesCount();
     void addSlide(int index = NULL);
     void removeSlide(int slideId);
@@ -20,7 +19,7 @@ public:
     void prevSlide();
     void slideById(int slideId);
     void moveSlide(int slideId, int newPosition);
-    std::vector<Slide> allSlides() const;
+    std::vector<Slide> getAllSlides() const;
     void copySlide(int slideId, int copiedSlideId);
 
     std::string getName() const;
@@ -32,3 +31,6 @@ private:
     std::vector<Slide> slides;
     int currentSlideIndex = 0;
 };
+
+
+#endif // PRESENTATION_HPP

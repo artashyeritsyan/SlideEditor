@@ -4,12 +4,12 @@
 #include "ShapeTypeEnum.hpp"
 #include "RGB.hpp"
 
-class Controller {
+class ControllerOld {
 public:
-    Controller () {
+    ControllerOld () {
         pres = new Presentation;
     }
-    ~Controller () {
+    ~ControllerOld () {
         delete pres;
     }
 
@@ -35,7 +35,7 @@ public:
 
 
     // Items
-    void addShape(ShapeTypeEnum type = ShapeTypeEnum::square, std::pair<int, int> position = {0, 0}, int widht, int height);
+    void addShape(ShapeTypeEnum type = ShapeTypeEnum::Rectangle, std::pair<int, int> position = {0, 0}, int widht, int height);
     void addText(std::string content = "", std::pair<int, int> position = {0, 0}, int widht, int height);
     void addImage(std::string imagePath, std::pair<int, int> position = {0, 0}, int widht, int height);
     void removeItem(int index);

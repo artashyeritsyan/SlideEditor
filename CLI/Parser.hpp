@@ -10,7 +10,7 @@ class Parser {
 public:
     Parser ();
 
-    void parse(std::stringstream &input);
+    std::unique_ptr<Command> parse(std::stringstream &input);
 
     std::unique_ptr<SyntaxAnalyzer> _syntaxAnalyzer;
     std::unique_ptr<SemanticAnalyser> _semanticAnalyser;

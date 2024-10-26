@@ -1,3 +1,6 @@
+#ifndef SEMANTIC_HPP 
+#define SEMANTIC_HPP
+
 #include "SyntaxAnalyzer.hpp"
 #include "Command.hpp"
 
@@ -10,9 +13,11 @@ public:
     std::unique_ptr<Command> startSemanticAnalize(const std::unique_ptr<SCommandInfo>& cmdInfo);    
 
 private:
-    CommandsMap _commandMap;
-
-private:
     void initializeCmdMap();
     std::unique_ptr<Command> createCommand(const std::unique_ptr<SCommandInfo> &commandInfo);
+
+private:
+    CommandsMap _commandMap;
 };
+
+#endif // SEMANTIC_HPP
