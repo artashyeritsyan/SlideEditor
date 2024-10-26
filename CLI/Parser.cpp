@@ -2,12 +2,13 @@
 
 Parser::Parser()
 {
-    syntaxAnalyzer = std::make_unique<SyntaxAnalyzer>();
+    _syntaxAnalyzer = std::make_unique<SyntaxAnalyzer>();
 }
 
 void Parser::parse(std::stringstream &input)
 {
-    auto commandMap = syntaxAnalyzer->startSyntaxAnalize(input);
+    std::unique_ptr<SCommandInfo> commandInfo = _syntaxAnalyzer->startSyntaxAnalize(input);
+    std::unique_ptr<Command> command = _semanticAnalyser->startSemanticAnalize(commandInfo);
 
     
 

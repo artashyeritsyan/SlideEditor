@@ -11,7 +11,6 @@ public:
     Presentation(const std::string& name, const std::vector<Slide>& slides)
         : name(name), slides(slides) {}
 
-
     // Command functions
     // TODO: Write an implementation for this functions 
     int slidesCount();

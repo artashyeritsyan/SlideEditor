@@ -1,5 +1,10 @@
-#include "SyntaxAnalyzer.hpp"
+#ifndef PARSER_HPP 
+#define PARSER_HPP
+
 #include <memory>
+
+#include "SyntaxAnalyzer.hpp"
+#include "SemanticAnalyzer.hpp"
 
 class Parser {
 public:
@@ -7,6 +12,8 @@ public:
 
     void parse(std::stringstream &input);
 
-private:
-    std::unique_ptr<SyntaxAnalyzer> syntaxAnalyzer;
+    std::unique_ptr<SyntaxAnalyzer> _syntaxAnalyzer;
+    std::unique_ptr<SemanticAnalyser> _semanticAnalyser;
 };
+
+#endif // PARSER_HPP

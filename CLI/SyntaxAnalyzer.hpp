@@ -1,33 +1,33 @@
 #ifndef SYNTAX_HPP 
 #define SYNTAX_HPP
 
-#include <vector>
-#include <unordered_map>
 #include <functional>
+#include <unordered_map>
+#include <vector>
 
-#include "Tokenizer.hpp"
 #include "Command.hpp"
+#include "Tokenizer.hpp"
 
-using ValueCheckingMap = std::unordered_map<std::string, std::unordered_map<std::string, std::function<bool(const std::string)>>>;
+using VariantIntDoubleStr = std::variant<int, double, std::string>;
+using ValueCheckingMap = std::unordered_map<std::string, std::unordered_map<std::string, std::function<VariantIntDoubleStr(const std::string&)>>>;
 
 class SyntaxAnalyzer {
 public:
     SyntaxAnalyzer();
-    std::unique_ptr<CommandInfo> startSyntaxAnalize(std::stringstream& input);
+    std::unique_ptr<SCommandInfo> startSyntaxAnalize(std::stringstream& input);
 
 private:
-    Tokenizer* tokenizer;
-    ValueCheckingMap commandRules;
+    Tokenizer* _tokenizer;
+    ValueCheckingMap _commandRules;
 
 private:
 
-    std::unique_ptr<CommandInfo> checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens);
+    std::unique_ptr<SCommandInfo> checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens);
     void createCheckingMap();
 
-    bool isPosition(const std::string& value);
-    bool isSize(const std::string& value);
-    bool isId(const std::string& value);
-    
+    VariantIntDoubleStr positionValidation(const std::string& value);
+    VariantIntDoubleStr sizeValidation(const std::string& value);
+    VariantIntDoubleStr IdValidation(const std::string& value); 
 };
 
 #endif // SYNTAX_HPP
