@@ -1,7 +1,7 @@
 #pragma once
 
 enum ItemTypeEnum {
-    text,
-    shape,
-    image
+    Text,
+    Shape,
+    Image
 };

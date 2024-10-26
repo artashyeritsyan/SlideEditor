@@ -1,11 +1,13 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 
 #include "Item.hpp"
 
 class Slide {
 public:
+    Slide();
     Slide() { items = new std::vector<Item>(); }
     ~Slide() { delete items; }
 
@@ -16,7 +18,7 @@ public:
 
     void addItem(ItemTypeEnum type, std::pair<int, int> position = {0, 0}, std::string name = "");
 
-    // TODO: Change the logic for index, add Id to every item and use itemId for finding item in vector
+    /// TODO: Change the logic for index, add Id to every item and use itemId for finding item in vector
     void removeItem(int itemIndex);
     void removeItem(const std::string& name);
     void renameItem(int itemIndex, const std::string& newName);

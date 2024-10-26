@@ -1,34 +1,53 @@
 #ifndef COMMAND_HPP 
 #define COMMAND_HPP
 
-#include <memory>
 #include <functional>
 #include <unordered_map>
 #include <vector>
 #include <variant>
+#include <string>
 
 #include "Tokenizer.hpp"
+#include "Editor.hpp"
 
-static std::unique_ptr<ICommand> create(const std::unique_ptr<CommandInfo>& commandInfo);
+using argumentsMap = std::unordered_map<std::string, std::vector<std::variant<int, double, std::string>>>;
 
-struct CommandInfo {
+struct SCommandInfo {
     std::string name;
-    std::unordered_map<std::string, std::vector<std::variant<int, double, std::string>>> arguments;
+    argumentsMap arguments;
 };
 
-class ICommand {
+class Command {
 public:
-    virtual void execute() = 0;
+    Command() = default;
+    Command(std::unique_ptr<argumentsMap> args);
+    virtual ~Command() = default;
 
-    
+    virtual void execute(Editor& editor) = 0;
+
+protected:
+   std::unique_ptr<argumentsMap> arguments;
 };
 
-class CmdAddShape : public ICommand {
-    
+class CmdAddSlide : public Command {
+    CmdAddSlide(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute(Editor& editor) override;
 };
 
-class CmdRemoveShape : public ICommand {
+class CmdRemoveSlide : public Command {
+    CmdRemoveSlide(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute(Editor& editor) override;
+};
 
+class CmdAddShape : public Command {
+public:
+    CmdAddShape(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute(Editor& editor) override;
+};
+
+class CmdRemoveShape : public Command {
+    CmdRemoveShape(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute(Editor& editor) override;
 };
 
 #endif // COMMAND_HPP

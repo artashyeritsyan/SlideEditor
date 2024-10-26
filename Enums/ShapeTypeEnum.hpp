@@ -1,7 +1,7 @@
 #pragma once
 
 enum ShapeTypeEnum {
-    square,
-    triangle,
-    circle
+    Rectangle,
+    Triangle,
+    Circle
 };

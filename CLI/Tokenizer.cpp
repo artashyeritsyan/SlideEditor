@@ -1,24 +1,24 @@
 #include "Tokenizer.hpp"
 
-Tokenizer::Tokenizer(std::stringstream& input) : inputStream(input) {
+Tokenizer::Tokenizer(std::stringstream& input) : _inputStream(input) {
     nextChar();
 }
 
 std::unique_ptr<SToken> Tokenizer::nextToken() {
-    while (inputStream) {
-        if (isspace(currentChar)) {
+    while (_inputStream) {
+        if (isspace(_currentChar)) {
             nextChar();
             continue;
         }
-        else if (currentChar >= 97 && currentChar <= 122 && !isFlagPassed) {
+        else if (_currentChar >= 97 && _currentChar <= 122 && !_isFlagPassed) {
             return parseWord();
         }
-        else if (currentChar == '-') {
+        else if (_currentChar == '-') {
             nextChar();
-            isFlagPassed = true;
+            _isFlagPassed = true;
             return parseFlag();
         } 
-        else if (isalnum(currentChar)) {
+        else if (isalnum(_currentChar)) {
             return parseValue();
         }
         
@@ -27,13 +27,13 @@ std::unique_ptr<SToken> Tokenizer::nextToken() {
 }
 
 void Tokenizer::nextChar() {
-        inputStream.get(currentChar);
+        _inputStream.get(_currentChar);
     }
 
 std::unique_ptr<SToken> Tokenizer::parseFlag() {
     std::string flagStr;
-    while (inputStream && (currentChar >= 97 && currentChar <= 122)) {
-        flagStr += currentChar;
+    while (_inputStream && (_currentChar >= 97 && _currentChar <= 122)) {
+        flagStr += _currentChar;
         nextChar();
     }
     return std::make_unique<SToken>(ETokenType::FLAG, flagStr);
@@ -41,8 +41,8 @@ std::unique_ptr<SToken> Tokenizer::parseFlag() {
 
 std::unique_ptr<SToken> Tokenizer::parseValue() {
     std::string valueStr;
-    while (inputStream && !isspace(currentChar)) {
-        valueStr += currentChar;
+    while (_inputStream && !isspace(_currentChar)) {
+        valueStr += _currentChar;
         nextChar();
     }
     return std::make_unique<SToken>(ETokenType::VALUE, valueStr);
@@ -50,8 +50,8 @@ std::unique_ptr<SToken> Tokenizer::parseValue() {
 
 std::unique_ptr<SToken> Tokenizer::parseWord() {
     std::string wordStr;
-    while (inputStream && (currentChar >= 97 && currentChar <= 122)) {
-        wordStr += currentChar;
+    while (_inputStream && (_currentChar >= 97 && _currentChar <= 122)) {
+        wordStr += _currentChar;
         nextChar();
     }
     return std::make_unique<SToken>(ETokenType::WORD, wordStr);

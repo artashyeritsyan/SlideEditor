@@ -9,13 +9,15 @@
 
 
 class Tokenizer {
-private:
-    std::stringstream& inputStream;
-    char currentChar;
-
 public:
     Tokenizer(std::stringstream& input);
     std::unique_ptr<SToken> nextToken();
+
+private:
+    std::stringstream& _inputStream;
+    char _currentChar;
+
+    bool _isFlagPassed;
 
 private:
     void nextChar();
@@ -24,7 +26,6 @@ private:
     std::unique_ptr<SToken> parseValue();
     std::unique_ptr<SToken> parseWord();
 
-    bool isFlagPassed;
 };
 
 #endif // TOKENIZER_HPP
