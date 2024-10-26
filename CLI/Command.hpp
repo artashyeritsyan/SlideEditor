@@ -18,9 +18,10 @@ struct SCommandInfo {
 
 class Command {
 public:
-    Command();
+    Command() = default;
     Command(std::unique_ptr<argumentsMap> args);
-    virtual ~Command();
+    virtual ~Command() = default;
+
     virtual void execute() = 0;
 
 protected:
@@ -29,19 +30,23 @@ protected:
 
 class CmdAddSlide : public Command {
     CmdAddSlide(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute() override;
 };
 
 class CmdRemoveSlide : public Command {
     CmdRemoveSlide(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute() override;
 };
 
 class CmdAddShape : public Command {
 public:
     CmdAddShape(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute() override;
 };
 
 class CmdRemoveShape : public Command {
     CmdRemoveShape(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute() override;
 };
 
 #endif // COMMAND_HPP
