@@ -1,30 +1,19 @@
-#ifndef TOKENIZER_HPP
+#ifndef TOKENIZER_HPP 
 #define TOKENIZER_HPP
 
-#include <sstream>
-#include <string>
 #include <memory>
+#include <sstream>
+#include <vector>
 
-#include "Token.hpp"
-
+#include "SToken.hpp"
 
 class Tokenizer {
-private:
-    std::stringstream& inputStream;
-    char currentChar;
-
 public:
-    Tokenizer(std::stringstream& input);
-    std::unique_ptr<SToken> nextToken();
+    
+    std::unique_ptr<SToken> tokenize(std::istream& inputStream);  
 
-private:
-    void nextChar();
+    SToken WhatIsTokenType(const std::string& word);   
 
-    std::unique_ptr<SToken> parseFlag();
-    std::unique_ptr<SToken> parseValue();
-    std::unique_ptr<SToken> parseWord();
-
-    bool isFlagPassed;
 };
 
-#endif // TOKENIZER_HPP
+#endif //TOKENIZER_HPP

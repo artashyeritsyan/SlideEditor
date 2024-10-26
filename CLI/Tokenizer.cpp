@@ -1,67 +1,79 @@
 #include "Tokenizer.hpp"
 
-Tokenizer::Tokenizer(std::stringstream& input) : inputStream(input) {
-    nextChar();
+bool isInvalid(const std::string& token) {
+    for (char c : token) {
+        if (!std::isalpha(c) && !std::isdigit(c) && c != '-') {
+            return true; 
+        }
+    }
+    return false; 
 }
 
-std::unique_ptr<SToken> Tokenizer::nextToken() {
-    while (inputStream) {
-        if (isspace(currentChar)) {
-            nextChar();
-            continue;
+bool isNumber(const std::string& token) {
+    for (char c : token) {
+        if (!std::isdigit(c)) return false;
+    }
+    return true;
+}
+
+bool isDouble(const std::string& token) {
+    bool hasDot = false;
+    for (char c : token) {
+        if (c == '.') {
+            if (hasDot) return false;  
+            hasDot = true;
+        } else if (!std::isdigit(c)) {
+            return false;
         }
-        else if (currentChar >= 97 && currentChar <= 122 && !isFlagPassed) {
-            return parseWord();
+    }
+    return hasDot;
+}
+
+bool isWord(const std::string& token) {
+    for (char c : token) {
+        if (!std::isalpha(c) && c != '_') {
+            return false;  
         }
-        else if (currentChar == '-') {
-            nextChar();
-            isFlagPassed = true;
-            return parseFlag();
-        } 
-        else if (isalnum(currentChar)) {
-            return parseValue();
+    }
+    return true;  
+}
+
+bool isArgument(const std::string& token) {
+    std::string subtoken = token.substr(1);
+    return !token.empty() && token[0] == '-' && isWord(subtoken);
+}
+
+bool isValue(const std::string& token) {
+    return isNumber(token) || isDouble(token) || isWord(token);
+}
+
+SToken Tokenizer::WhatIsTokenType(const std::string& word) {
+    if (isNumber(word)) {
+        return SToken(SToken::EType::Value, std::stoi(word));
+    } else if (isDouble(word)) {
+        return SToken(SToken::EType::Value, std::stod(word));
+    } else if (isArgument(word)) {
+        std::string argument = word.substr(1);
+        return SToken(SToken::EType::Arg, argument);
+    } else if (isWord(word)) {
+        return SToken(SToken::EType::Word, word);
+    } else {
+        return SToken(SToken::EType::EOL, ""); 
+    }
+}
+
+std::unique_ptr<SToken> Tokenizer::tokenize(std::istream& inputStream) {
+    std::string word;
+
+    if (inputStream >> word) {
+        if (isInvalid(word)) {
+            throw std::runtime_error("Invalid token: " + word);
         }
+
+        SToken result = WhatIsTokenType(word);
         
-    }
-    return std::make_unique<SToken>(ETokenType::END, "");
-}
-
-void Tokenizer::nextChar() {
-        inputStream.get(currentChar);
+        return std::make_unique<SToken>(result.getType(), result.getContent());
     }
 
-std::unique_ptr<SToken> Tokenizer::parseFlag() {
-    std::string flagStr;
-    while (inputStream && (currentChar >= 97 && currentChar <= 122)) {
-        flagStr += currentChar;
-        nextChar();
-    }
-    return std::make_unique<SToken>(ETokenType::FLAG, flagStr);
-}
-
-std::unique_ptr<SToken> Tokenizer::parseValue() {
-    std::string valueStr;
-    while (inputStream && !isspace(currentChar)) {
-        valueStr += currentChar;
-        nextChar();
-    }
-    return std::make_unique<SToken>(ETokenType::VALUE, valueStr);
-}
-
-std::unique_ptr<SToken> Tokenizer::parseWord() {
-    std::string wordStr;
-    while (inputStream && (currentChar >= 97 && currentChar <= 122)) {
-        wordStr += currentChar;
-        nextChar();
-    }
-    return std::make_unique<SToken>(ETokenType::WORD, wordStr);
-}
-
-std::string SToken::getTypeString() const {
-    switch (type) {
-        case ETokenType::WORD:  return "WORD";
-        case ETokenType::FLAG:  return "FLAG";
-        case ETokenType::VALUE: return "VALUE";
-        default: return "END";
-    }
+    return nullptr; 
 }
