@@ -2,6 +2,7 @@
 #define ITEM_HPP
 
 #include <string>
+#include <memory>
 #include "ItemTypeEnum.hpp"
 
 class Item {

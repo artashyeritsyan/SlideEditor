@@ -8,10 +8,11 @@
 
 class Parser {
 public:
-    Parser ();
-
+    Parser (std::shared_ptr<Presentation> pr);
     std::unique_ptr<Command> parse(std::stringstream &input);
 
+
+private:
     std::unique_ptr<SyntaxAnalyzer> _syntaxAnalyzer;
     std::unique_ptr<SemanticAnalyser> _semanticAnalyser;
 };

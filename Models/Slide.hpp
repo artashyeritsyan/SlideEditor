@@ -7,6 +7,7 @@
 
 class Slide {
 public:
+    Slide();
     Slide() { items = new std::vector<Item>(); }
     ~Slide() { delete items; }
 

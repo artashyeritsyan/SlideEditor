@@ -21,7 +21,6 @@ private:
     ValueCheckingMap _commandRules;
 
 private:
-
     std::unique_ptr<SCommandInfo> checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens);
     void createCheckingMap();
 

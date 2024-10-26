@@ -1,8 +1,10 @@
 #include "SemanticAnalyzer.hpp"
 
-SemanticAnalyser::SemanticAnalyser()
+SemanticAnalyser::SemanticAnalyser(std::shared_ptr<Presentation> pr)
 {
     initializeCmdMap();
+
+    _editor = std::make_unique<Editor>(pr);
 }
 
 void SemanticAnalyser::initializeCmdMap()

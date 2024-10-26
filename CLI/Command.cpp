@@ -5,19 +5,20 @@ Command::Command(std::unique_ptr<argumentsMap> args)
     arguments = std::move(args);
 }
 
-void CmdAddSlide::execute()
+void CmdAddSlide::execute(Editor& editor)
 {
-    std::cout << "Executing: Add Slide" << std::endl;
+    editor.addSlide();
 }
 
-void CmdRemoveSlide::execute()
+void CmdRemoveSlide::execute(Editor& editor)
+{
+    editor.removeSlide();
+}
+
+void CmdAddShape::execute(Editor& editor)
 {
 }
 
-void CmdAddShape::execute()
-{
-}
-
-void CmdRemoveShape::execute()
+void CmdRemoveShape::execute(Editor& editor)
 {
 }

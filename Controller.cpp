@@ -2,7 +2,8 @@
 
 Controller::Controller()
 {
-    _parser = std::make_unique<Parser>();
+    _presentation = std::make_shared<Presentation>();
+    _parser = std::make_unique<Parser>(_presentation);
 }
 
 void Controller::startProgram()

@@ -7,13 +7,15 @@
 class Presentation {
 public:
     Presentation();
-    Presentation(const std::string& name, const std::vector<Slide>& slides)
+    Presentation(const std::string& name, const std::vector<std::unique_ptr<Slide>> slides)
         : name(name), slides(slides) {}
 
     // Command functions
     /// TODO: Write an implementation for this functions 
+
+    void addSlide(int index, std::unique_ptr<Slide> slide);
+
     int slidesCount();
-    void addSlide(int index = NULL);
     void removeSlide(int slideId);
     void nextSlide();
     void prevSlide();
@@ -28,7 +30,7 @@ public:
 
 private:
     std::string name;
-    std::vector<Slide> slides;
+    std::vector<std::unique_ptr<Slide>> slides;
     int currentSlideIndex = 0;
 };
 
