@@ -1,5 +1,5 @@
 # StrongDot
-The program like PowerPoint, named similar "StrongDot" 
+The program like PowerPoint
 
 The Commands`
 ```
