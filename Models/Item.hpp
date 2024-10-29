@@ -3,7 +3,8 @@
 
 #include <string>
 #include <memory>
-#include "ItemTypeEnum.hpp"
+
+#include "../Enums/ItemTypeEnum.hpp"
 
 class Item {
 public:

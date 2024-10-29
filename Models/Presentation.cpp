@@ -26,11 +26,15 @@ std::string Presentation::getName() const
     return _name;
 }
 
-std::unique_ptr<Slide>& Presentation::getSlideByIndex(int index) {
-    return _slides[index];
+const Slide* Presentation::getSlideByIndex(int index) {
+    return _slides[index].get();
 }
 
-std::vector<std::unique_ptr<Slide>> &Presentation::getAllSlides()
-{
-    return _slides;
-}
+// const std::vector<std::unique_ptr<Slide>> &Presentation::getAllSlides() const
+// {
+//     return _slides;
+// }
+
+ const std::vector<std::unique_ptr<Slide>>& Presentation::getAllSlides() const {
+        return _slides;
+    }

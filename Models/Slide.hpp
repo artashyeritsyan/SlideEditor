@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SLIDE_HPP
+#define SLIDE_HPP
 
 #include <iostream>
 #include <vector>
@@ -32,3 +33,5 @@ private:
     void nameRepeatingCheck(std::string name); 
     size_t findMaxOrder();
 };
+
+#endif // SLIDE_HPP

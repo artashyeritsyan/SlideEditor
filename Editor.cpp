@@ -40,24 +40,38 @@ void Editor::removeSlide(int slideId)
 //     return std::vector<Item>();
 // }
 
-void Editor::printSlides()
-{
-    int slideIndex = 0;
+// void Editor::printSlides()
+// {
+//     int slideIndex = 0;
 
-    for (const auto& slide : _presentation.getAllSlides()) {
-        std::cout << "Slide " << slideIndex 
-                  << ": Item count = " << slide->getAllItems().size() 
-                  << std::endl;
-        ++slideIndex;
+//     for (const auto& slide : _presentation.getAllSlides()) {
+//         std::cout << "Slide " << slideIndex 
+//                   << ": Item count = " << slide->getAllItems().size() 
+//                   << std::endl;
+//         ++slideIndex;
+//     }
+// }
+
+    void Editor::printSlides() {
+        int slideIndex = 0;
+        
+        const auto& slides = _presentation.getAllSlides();
+        for (const auto& slidePtr : slides) {
+            if (slidePtr) {
+                std::cout << "Slide " << slideIndex 
+                          << ": Item count = " << slidePtr->getAllItems().size()
+                          << std::endl;
+            }
+            ++slideIndex;
+        }
     }
-}
 
 
 void Editor::printItems()
 {
-    std::unique_ptr<Slide> &slides = _presentation.getSlideByIndex(currSlideIndex);
+    const auto &slide = _presentation.getSlideByIndex(currSlideIndex);
 
-    for (const auto& item : slides->getAllItems()) {
+    for (const auto& item : slide->getAllItems()) {
         auto pos = item->getPosition();
         std::cout << "Item ID: " << item->getId() 
                   << ", X: " << pos.first

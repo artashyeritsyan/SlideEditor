@@ -23,8 +23,8 @@ public:
 
     // Items
     void addShape(std::unique_ptr<Item> shape);
-    void addText(std::string content = "", int x = 0, int y = 0, int widht, int height);
-    void addImage(std::string imagePath, int x = 0, int y = 0, int widht, int height);
+    // void addText(std::string content = "", int x = 0, int y = 0, int widht, int height);
+    // void addImage(std::string imagePath, int x = 0, int y = 0, int widht, int height);
     void removeItem(int index);
     // std::vector<Item> itemsList(int slideId);
 
