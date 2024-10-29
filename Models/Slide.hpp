@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SLIDE_HPP
+#define SLIDE_HPP
 
 #include <iostream>
 #include <vector>
@@ -8,13 +9,12 @@
 class Slide {
 public:
     Slide();
-    Slide() { items = new std::vector<Item>(); }
-    ~Slide() { delete items; }
+    ~Slide() {}
 
-    int getItemsCount();
+    // int getItemsCount();
     
     // Print all items in slide, ordering bay their LayerOrder 
-    std::vector<Item> getAllItems();
+    std::vector<std::unique_ptr<Item>>& getAllItems();
 
     void addItem(ItemTypeEnum type, std::pair<int, int> position = {0, 0}, std::string name = "");
 
@@ -27,9 +27,11 @@ public:
     void renameItem(const std::string& name, const std::string& newName);
 
 private:
-    int pageNumber;
-    std::vector<Item> *items;
+    // int pageNumber;
+    std::vector<std::unique_ptr<Item>> _items;
 
     void nameRepeatingCheck(std::string name); 
     size_t findMaxOrder();
 };
+
+#endif // SLIDE_HPP

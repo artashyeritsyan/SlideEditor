@@ -1,9 +1,9 @@
 #ifndef SEMANTIC_HPP 
 #define SEMANTIC_HPP
 
+#include "Command.hpp"
 #include "Models/Presentation.hpp"
 #include "SyntaxAnalyzer.hpp"
-#include "Command.hpp"
 
 using CommandsMap = std::unordered_map<std::string, std::function<std::unique_ptr<Command>(argumentsMap)>>;
 

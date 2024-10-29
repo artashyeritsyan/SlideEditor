@@ -3,36 +3,40 @@
 
 #include <string>
 #include <memory>
-#include "ItemTypeEnum.hpp"
+
+#include "../Enums/ItemTypeEnum.hpp"
 
 class Item {
 public:
     Item (const std::string& name, ItemTypeEnum type, int layerOrder, const std::pair<int, int>& position);
     Item() = default;
 
-    std::string getName() const;
-    ItemTypeEnum getType() const;
-    std::pair<int, int> getPosition() const;
-    int getLayer() const;
-    int getWidth() const;
-    int getHeight() const;
+    size_t getId() const { return id; }
+    std::string getName() const { return name; }
+    ItemTypeEnum getType() const { return type; }
+    std::pair<int, int> getPosition() const { return position; }
+    size_t getLayer() const { return layerOrder; }
+    int getWidth() const { return width; }
+    int getHeight() const { return height; }
 
-    void setName(const std::string&);
-    void setType(ItemTypeEnum type) {this->type = type;}
-    void setPosition(std::pair<int, int>);
-    void setPosition(int x, int y);
-    void setLayer(int layerOrder);
-    void setWidth(int value);
-    void setHeight(int value);
+    void setId(size_t newId) { id = newId; }
+    void setName(const std::string& newName) { name = newName; }
+    void setType(ItemTypeEnum newType) { type = newType; }
+    void setPosition(std::pair<int, int> newPosition) { position = newPosition; }
+    void setPosition(int x, int y) { position = {x, y}; }
+    void setLayer(size_t newLayerOrder) { layerOrder = newLayerOrder; }
+    void setWidth(int newWidth) { width = newWidth; }
+    void setHeight(int newHeight) { height = newHeight; }
 
     void bringForward();
     void sendBackward();
     void bringToFront();
     void sendToBack();
 
+    size_t id;
     std::string name;
     ItemTypeEnum type = Text;
-    int layerOrder;
+    size_t layerOrder;
     std::pair<int, int> position = {0, 0};
     int width = 10;
     int height = 10;

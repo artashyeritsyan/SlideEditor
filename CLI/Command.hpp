@@ -8,7 +8,7 @@
 #include <string>
 
 #include "Tokenizer.hpp"
-#include "Editor.hpp"
+#include "../Editor.hpp"
 
 using argumentsMap = std::unordered_map<std::string, std::vector<std::variant<int, double, std::string>>>;
 
@@ -26,7 +26,7 @@ public:
     virtual void execute(Editor& editor) = 0;
 
 protected:
-   std::unique_ptr<argumentsMap> arguments;
+   std::unique_ptr<argumentsMap> _arguments;
 };
 
 class CmdAddSlide : public Command {
@@ -47,6 +47,11 @@ public:
 
 class CmdRemoveShape : public Command {
     CmdRemoveShape(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute(Editor& editor) override;
+};
+
+class CmdSlideList : public Command {
+    CmdSlideList(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
     void execute(Editor& editor) override;
 };
 
