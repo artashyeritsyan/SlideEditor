@@ -8,20 +8,20 @@ class Presentation {
 public:
     Presentation();
     Presentation(const std::string& name, const std::vector<std::unique_ptr<Slide>> slides)
-        : name(name), slides(slides) {}
+        : _name(name), _slides(slides) {}
 
     // Command functions
     /// TODO: Write an implementation for this functions 
 
     void addSlide(int index, std::unique_ptr<Slide> slide);
 
-    int slidesCount();
-    void removeSlide(int slideId);
-    void nextSlide();
-    void prevSlide();
-    void slideById(int slideId);
+    int getSlidesSize();
+    std::unique_ptr<Slide>& getSlideByIndex(int index);
+    std::vector<std::unique_ptr<Slide>>& getAllSlides();
+    void removeSlide(int index);
+    // void nextSlide();
+    // void prevSlide();
     void moveSlide(int slideId, int newPosition);
-    std::vector<Slide> getAllSlides() const;
     void copySlide(int slideId, int copiedSlideId);
 
     std::string getName() const;
@@ -29,9 +29,9 @@ public:
     int getCurrentSlideIndex();
 
 private:
-    std::string name;
-    std::vector<std::unique_ptr<Slide>> slides;
-    int currentSlideIndex = 0;
+    std::string _name;
+    std::vector<std::unique_ptr<Slide>> _slides;
+    // int currentSlideIndex = 0;
 };
 
 

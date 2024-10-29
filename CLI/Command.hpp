@@ -50,4 +50,9 @@ class CmdRemoveShape : public Command {
     void execute(Editor& editor) override;
 };
 
+class CmdSlideList : public Command {
+    CmdSlideList(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
+    void execute(Editor& editor) override;
+};
+
 #endif // COMMAND_HPP

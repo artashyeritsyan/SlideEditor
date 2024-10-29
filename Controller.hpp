@@ -14,8 +14,8 @@ public:
     
 private:
     std::unique_ptr<Parser> _parser;
-    // Need a function for deserializing file into Presentation
     std::shared_ptr<Presentation> _presentation;
+/// TODO: in feature need a function for deserializing file into Presentation
 };
 
 #endif // CONTROLLER_HPP

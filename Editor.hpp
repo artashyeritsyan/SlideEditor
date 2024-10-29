@@ -7,7 +7,7 @@
 
 class Editor {
 public:
-    explicit Editor(Presentation& pres) : presentation(pres) {}
+    explicit Editor(Presentation& pres) : _presentation(pres) {}
 
 
     // Slide 
@@ -18,7 +18,7 @@ public:
     void openSlideById(int slideId);
     void moveSlide(int slideId, int newId);
     void copySlide(int slideId, int newSlidePosition);
-    std::vector<Slide> slidesList(); //print or just return vector of slides
+    // std::vector<Slide> slidesList(); //print or just return vector of slides
 
 
     // Items
@@ -26,9 +26,11 @@ public:
     void addText(std::string content = "", int x = 0, int y = 0, int widht, int height);
     void addImage(std::string imagePath, int x = 0, int y = 0, int widht, int height);
     void removeItem(int index);
-    std::vector<Item> itemsList();
+    // std::vector<Item> itemsList(int slideId);
 
-
+    // Print on screen
+    void printSlides();
+    void printItems();
     // Will be added in feature
     /*
     void removeItemByName(std::string name);
@@ -54,6 +56,7 @@ public:
     */
 
 private:
+    size_t currSlideIndex = 0;
     Presentation& _presentation;
 };
 
