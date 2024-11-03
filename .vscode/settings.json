@@ -56,5 +56,6 @@
         "sstream": "cpp",
         "variant": "cpp"
     },
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "makefile.configureOnOpen": true
 }

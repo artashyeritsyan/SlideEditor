@@ -16,7 +16,7 @@ void Editor::openPrevSlide()
 
 void Editor::addSlide(int slideId)
 {
-    std::unique_ptr<Slide> slide = std::make_unique<Slide>();
+    std::shared_ptr<Slide> slide = std::make_unique<Slide>();
     if(slideId == 0) {
         _presentation.addSlide(_presentation.getSlidesSize(), std::move(slide));
     }
@@ -52,19 +52,19 @@ void Editor::removeSlide(int slideId)
 //     }
 // }
 
-    void Editor::printSlides() {
-        int slideIndex = 0;
-        
-        const auto& slides = _presentation.getAllSlides();
-        for (const auto& slidePtr : slides) {
-            if (slidePtr) {
-                std::cout << "Slide " << slideIndex 
-                          << ": Item count = " << slidePtr->getAllItems().size()
-                          << std::endl;
-            }
-            ++slideIndex;
+void Editor::printSlides() {
+    int slideIndex = 0;
+    
+    const auto& slides = _presentation.getAllSlides();
+    for (const auto& slidePtr : slides) {
+        if (slidePtr) {
+            std::cout << "Slide " << slideIndex 
+                        << ": Item count = " << slidePtr->getAllItems().size()
+                        << std::endl;
         }
+        ++slideIndex;
     }
+}
 
 
 void Editor::printItems()

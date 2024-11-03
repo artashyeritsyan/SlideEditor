@@ -9,12 +9,12 @@
 class Parser {
 public:
     Parser (std::shared_ptr<Presentation> pr);
-    std::unique_ptr<Command> parse(std::stringstream &input);
+    std::shared_ptr<Command> parse(std::stringstream &input);
 
 
 private:
-    std::unique_ptr<SyntaxAnalyzer> _syntaxAnalyzer;
-    std::unique_ptr<SemanticAnalyser> _semanticAnalyser;
+    std::shared_ptr<SyntaxAnalyzer> _syntaxAnalyzer;
+    std::shared_ptr<SemanticAnalyser> _semanticAnalyser;
 };
 
 #endif // PARSER_HPP

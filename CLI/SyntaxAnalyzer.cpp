@@ -23,11 +23,11 @@ void SyntaxAnalyzer::createCheckingMap()
     };
 }
 
-std::unique_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
+std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
 {
     _tokenizer = new Tokenizer(input);
-    std::vector<std::unique_ptr<SToken>> tokens;
-    std::unique_ptr<SToken> token = _tokenizer->nextToken();
+    std::vector<std::shared_ptr<SToken>> tokens;
+    std::shared_ptr<SToken> token = _tokenizer->nextToken();
 
     while(token->type != ETokenType::END) {
 
@@ -62,14 +62,14 @@ std::unique_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstre
         token = _tokenizer->nextToken();
     }
 
-    return checkCommandCorrectness(tokens);    
+    return std::move(checkCommandCorrectness(tokens));    
 }
 
-std::unique_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens) {
+std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vector<std::shared_ptr<SToken>> tokens) {
 
     std::string cmd = tokens[0]->value;
 
-    std::unique_ptr<SCommandInfo> cmdInfo = std::make_unique<SCommandInfo>();
+    std::shared_ptr<SCommandInfo> cmdInfo = std::make_unique<SCommandInfo>();
     
     int i = 0;
     while (tokens[i]->type == ETokenType::WORD && i < tokens.size()) {
@@ -100,7 +100,7 @@ std::unique_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
 
     }
 
-    return cmdInfo;
+    return std::move(cmdInfo);
 }
 
 

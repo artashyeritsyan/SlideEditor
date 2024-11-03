@@ -4,6 +4,7 @@ Controller::Controller()
 {
     _presentation = std::make_shared<Presentation>();
     _parser = std::make_unique<Parser>(_presentation);
+    _editor = std::make_shared<Editor>(_presentation);
 }
 
 void Controller::startProgram()
@@ -23,8 +24,8 @@ void Controller::startProgram()
                 break;
             }
 
-            std::unique_ptr<Command> command = _parser->parse(sInput);
-            command->execute();
+            std::shared_ptr<Command> command = _parser->parse(sInput);
+            command->execute(_editor);
         }
     } catch (const std::exception& e) {
         std::cerr << "Parsing error: " << e.what() << std::endl;

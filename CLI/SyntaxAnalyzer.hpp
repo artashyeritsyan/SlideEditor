@@ -14,14 +14,14 @@ using ValueCheckingMap = std::unordered_map<std::string, std::unordered_map<std:
 class SyntaxAnalyzer {
 public:
     SyntaxAnalyzer();
-    std::unique_ptr<SCommandInfo> startSyntaxAnalize(std::stringstream& input);
+    std::shared_ptr<SCommandInfo> startSyntaxAnalize(std::stringstream& input);
 
 private:
     Tokenizer* _tokenizer;
     ValueCheckingMap _commandRules;
 
 private:
-    std::unique_ptr<SCommandInfo> checkCommandCorrectness(std::vector<std::unique_ptr<SToken>> tokens);
+    std::shared_ptr<SCommandInfo> checkCommandCorrectness(std::vector<std::shared_ptr<SToken>> tokens);
     void createCheckingMap();
 
     VariantIntDoubleStr positionValidation(const std::string& value);

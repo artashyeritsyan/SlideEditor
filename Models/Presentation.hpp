@@ -7,23 +7,18 @@
 class Presentation {
 public:
     Presentation();
-    Presentation(const std::string& name, const std::vector<std::unique_ptr<Slide>> slides)
+    Presentation(const std::string& name, const std::vector<std::shared_ptr<Slide>> slides)
         : _name(name), _slides(slides) {}
 
-     Presentation(const Presentation&) = delete;
-    Presentation& operator=(const Presentation&) = delete;
-
-        Presentation(Presentation&&) noexcept = default;
-    Presentation& operator=(Presentation&&) noexcept = default;
 
     // Command functions
     /// TODO: Write an implementation for this functions 
 
-    void addSlide(int index, std::unique_ptr<Slide> slide);
+    void addSlide(int index, std::shared_ptr<Slide> slide);
 
     int getSlidesSize();
-    const Slide* getSlideByIndex(int index);
-    const std::vector<std::unique_ptr<Slide>>& getAllSlides() const;
+    const std::shared_ptr<Slide>& getSlideByIndex(int index);
+    const std::vector<std::shared_ptr<Slide>>& getAllSlides() const;
     void removeSlide(int index);
     // void nextSlide();
     // void prevSlide();
@@ -36,7 +31,7 @@ public:
 
 private:
     std::string _name;
-    std::vector<std::unique_ptr<Slide>> _slides;
+    std::vector<std::shared_ptr<Slide>> _slides;
     // int currentSlideIndex = 0;
 };
 
