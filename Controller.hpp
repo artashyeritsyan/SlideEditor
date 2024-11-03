@@ -13,8 +13,9 @@ public:
     void startProgram();
     
 private:
-    std::unique_ptr<Parser> _parser;
+    std::shared_ptr<Parser> _parser;
     std::shared_ptr<Presentation> _presentation;
+    std::shared_ptr<Editor> _editor;
 /// TODO: in feature need a function for deserializing file into Presentation
 };
 

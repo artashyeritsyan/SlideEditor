@@ -22,37 +22,38 @@ public:
     Command() = default;
     Command(std::unique_ptr<argumentsMap> args);
     virtual ~Command() = default;
-
-    virtual void execute(Editor& editor) = 0;
+z
+    virtual void execute(std::shared_ptr<Editor>& editor) = 0;
 
 protected:
-   std::unique_ptr<argumentsMap> _arguments;
+    int indexValidate() ;
+    std::unique_ptr<argumentsMap> _arguments;
 };
 
 class CmdAddSlide : public Command {
     CmdAddSlide(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
-    void execute(Editor& editor) override;
+    void execute(std::shared_ptr<Editor>& editor) override;
 };
 
 class CmdRemoveSlide : public Command {
     CmdRemoveSlide(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
-    void execute(Editor& editor) override;
+    void execute(std::shared_ptr<Editor>& editor) override;
 };
 
 class CmdAddShape : public Command {
 public:
     CmdAddShape(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
-    void execute(Editor& editor) override;
+    void execute(std::shared_ptr<Editor>& editor) override;
 };
 
 class CmdRemoveShape : public Command {
     CmdRemoveShape(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
-    void execute(Editor& editor) override;
+    void execute(std::shared_ptr<Editor>& editor) override;
 };
 
 class CmdSlideList : public Command {
     CmdSlideList(std::unique_ptr<argumentsMap> args) : Command(std::move(args)) {}
-    void execute(Editor& editor) override;
+    void execute(std::shared_ptr<Editor>& editor) override;
 };
 
 #endif // COMMAND_HPP

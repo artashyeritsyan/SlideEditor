@@ -1,37 +1,46 @@
 #include "Command.hpp"
 
-Command::Command(std::unique_ptr<argumentsMap> args)
+Command::Command(std::shared_ptr<argumentsMap> args)
 {
     _arguments = std::move(args);
 }
 
-void CmdAddSlide::execute(Editor& editor)
+int Command::indexValidate()
 {
-    editor.addSlide();
-}
-
-void CmdRemoveSlide::execute(Editor& editor)
-{
+    int slideIndex = -1;
     if(_arguments->find("i") == _arguments->end()) {
         std::cerr << "Error: Missing required argument 'i' for slide index." << std::endl;
-        return;
+        return slideIndex;
     }
 
     auto it = _arguments->find("i");
     if (it == _arguments->end()) {
         std::cerr << "Error: Missing required argument 'i' for slide index." << std::endl;
-        return;
+        return slideIndex;
     }
 
-    int slideIndex = std::get<int>(it->second[0]);
-
-    editor.removeSlide(slideIndex);
+    slideIndex = std::get<int>(it->second[0]);
+    return slideIndex;
 }
 
-void CmdAddShape::execute(Editor& editor)
+void CmdAddSlide::execute(std::shared_ptr<Editor>& editor)
+{    
+    int slideIndex = indexValidate();
+
+    editor->addSlide(slideIndex);
+}
+
+void CmdRemoveSlide::execute(std::shared_ptr<Editor>& editor)
+{
+    int slideIndex = indexValidate();
+
+    editor->removeSlide(slideIndex);
+}
+
+void CmdAddShape::execute(std::shared_ptr<Editor>& editor)
 {
 }
 
-void CmdRemoveShape::execute(Editor& editor)
+void CmdRemoveShape::execute(std::shared_ptr<Editor>& editor)
 {
 }

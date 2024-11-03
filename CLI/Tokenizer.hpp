@@ -11,7 +11,7 @@
 class Tokenizer {
 public:
     Tokenizer(std::stringstream& input);
-    std::unique_ptr<SToken> nextToken();
+    std::shared_ptr<SToken> nextToken();
 
 private:
     std::stringstream& _inputStream;
@@ -22,9 +22,9 @@ private:
 private:
     void nextChar();
 
-    std::unique_ptr<SToken> parseFlag();
-    std::unique_ptr<SToken> parseValue();
-    std::unique_ptr<SToken> parseWord();
+    std::shared_ptr<SToken> parseFlag();
+    std::shared_ptr<SToken> parseValue();
+    std::shared_ptr<SToken> parseWord();
 
 };
 

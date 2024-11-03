@@ -2,10 +2,10 @@
 #define SEMANTIC_HPP
 
 #include "Command.hpp"
-#include "Models/Presentation.hpp"
+#include "../Models/Presentation.hpp"
 #include "SyntaxAnalyzer.hpp"
 
-using CommandsMap = std::unordered_map<std::string, std::function<std::unique_ptr<Command>(argumentsMap)>>;
+using CommandsMap = std::unordered_map<std::string, std::function<std::unique_ptr<Command>(std::unique_ptr<argumentsMap>)>>;
 
 class SemanticAnalyser {
 public:
@@ -18,8 +18,8 @@ private:
     std::unique_ptr<Command> createCommand(const std::unique_ptr<SCommandInfo> &commandInfo);
 
 private:
-    CommandsMap _commandMap;
-    std::unique_ptr<Editor> _editor;
+    std::unique_ptr<CommandsMap> _commandMap;
+    std::shared_ptr<Editor> _editor;
 };
 
 #endif // SEMANTIC_HPP

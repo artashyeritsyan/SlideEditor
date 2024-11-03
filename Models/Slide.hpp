@@ -14,7 +14,7 @@ public:
     // int getItemsCount();
     
     // Print all items in slide, ordering bay their LayerOrder 
-    std::vector<std::unique_ptr<Item>>& getAllItems();
+    std::vector<std::shared_ptr<Item>>& getAllItems();
 
     void addItem(ItemTypeEnum type, std::pair<int, int> position = {0, 0}, std::string name = "");
 
@@ -28,7 +28,7 @@ public:
 
 private:
     // int pageNumber;
-    std::vector<std::unique_ptr<Item>> _items;
+    std::vector<std::shared_ptr<Item>> _items;
 
     void nameRepeatingCheck(std::string name); 
     size_t findMaxOrder();

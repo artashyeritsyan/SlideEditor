@@ -1,6 +1,6 @@
 #include "Presentation.hpp"
 
-void Presentation::addSlide(int index, std::unique_ptr<Slide> slide) {
+void Presentation::addSlide(int index, std::shared_ptr<Slide> slide) {
     if (index == _slides.size()) {
         _slides.push_back(slide);
     }
@@ -26,7 +26,7 @@ std::string Presentation::getName() const
     return _name;
 }
 
-const Slide* Presentation::getSlideByIndex(int index) {
+const std::shared_ptr<Slide>& Presentation::getSlideByIndex(int index) {
     return _slides[index].get();
 }
 
@@ -35,6 +35,6 @@ const Slide* Presentation::getSlideByIndex(int index) {
 //     return _slides;
 // }
 
- const std::vector<std::unique_ptr<Slide>>& Presentation::getAllSlides() const {
+ const std::vector<std::shared_ptr<Slide>>& Presentation::getAllSlides() const {
         return _slides;
     }
