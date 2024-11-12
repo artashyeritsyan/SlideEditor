@@ -3,8 +3,9 @@
 
 #include <iostream>
 #include <sstream>
-#include "CLI/Parser.hpp"
+
 #include "CLI/Command.hpp"
+#include "CLI/Parser.hpp"
 #include "Models/Presentation.hpp"
 
 class Controller {

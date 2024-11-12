@@ -21,7 +21,7 @@ void SyntaxAnalyzer::createCheckingMap()
             {"id", [this](const std::string& value) { return this->IdValidation(value); }}
         }}
     };
-}
+} 
 
 std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
 {
@@ -67,6 +67,8 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstre
 
 std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vector<std::shared_ptr<SToken>> tokens) {
 
+    /// TODO: talisa menak 1 bar piti 2 haty ta
+
     std::string cmd = tokens[0]->value;
 
     std::shared_ptr<SCommandInfo> cmdInfo = std::make_unique<SCommandInfo>();
@@ -80,7 +82,6 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
         std::cerr << "Invalid command" << std::endl;
         // throw an exception
     }
-
     std::string flag;
     std::string value;
     while(i < tokens.size()) {
@@ -95,12 +96,13 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
         // if(_commandRules[cmd][flag](value)) {
         //     cmdInfo->arguments[flag].push_back(value);
         // }
-
+        
+        /// TODO: stugel flagy ka te che find()-ov
         cmdInfo->arguments[flag].push_back(_commandRules[cmd][flag](value));
 
     }
 
-    return std::move(cmdInfo);
+    return cmdInfo;
 }
 
 

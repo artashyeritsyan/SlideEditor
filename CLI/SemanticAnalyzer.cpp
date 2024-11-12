@@ -5,34 +5,34 @@ SemanticAnalyser::SemanticAnalyser(std::shared_ptr<Presentation> pr)
     initializeCmdMap();
 
     _editor = std::make_shared<Editor>(pr);
-    _commandMap = std::make_unique<CommandsMap>(pr);
+    _commandMap = std::make_unique<CommandsMap>();
 
 }
 
 void SemanticAnalyser::initializeCmdMap()
 {
 // Use pattern Prototype to create the prototypes of each Command Class with their own default values and then just copy it and change values if needed
-    _commandMap = {
-        { "addslide", [](std::unique_ptr<argumentsMap> args) { return std::make_unique<CmdAddSlide>(std::move(args)); } },
-        { "addshape", [](std::unique_ptr<argumentsMap> args) { return std::make_unique<CmdAddShape>(std::move(args)); } },
-        { "removeslide", [](std::unique_ptr<argumentsMap> args) { return std::make_unique<CmdRemoveSlide>(std::move(args)); } },
-        { "removeshape", [](std::unique_ptr<argumentsMap> args) { return std::make_unique<CmdRemoveShape>(std::move(args)); } }
+    *_commandMap = {
+        { "addslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdAddSlide>(std::move(args)); } },
+        { "addshape", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdAddShape>(std::move(args)); } },
+        { "removeslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdRemoveSlide>(std::move(args)); } },
+        { "removeshape", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdRemoveShape>(std::move(args)); } }
     };
 }
 
-std::unique_ptr<Command> SemanticAnalyser::startSemanticAnalize(const std::unique_ptr<SCommandInfo> &cmdInfo)
+std::unique_ptr<Command> SemanticAnalyser::startSemanticAnalize(const std::shared_ptr<SCommandInfo> &cmdInfo)
 {
     return std::move(createCommand(cmdInfo));
 }
 
-std::unique_ptr<Command> SemanticAnalyser::createCommand(const std::unique_ptr<SCommandInfo> &commandInfo)
+std::unique_ptr<Command> SemanticAnalyser::createCommand(const std::shared_ptr<SCommandInfo> &commandInfo)
 {
-    if(_commandMap.find(commandInfo->name) == _commandMap.end()) {
+    if(_commandMap->find(commandInfo->name) == _commandMap->end()) {
         // throw an exception "Semantic error, Wrong command"
         std::cerr << "Semantic error, Wrong command" << std::endl;
     }
 
-    return std::move((*_commandMap)[commandInfo->name](commandInfo->arguments));
+    return std::move((*_commandMap)[commandInfo->name](std::make_unique<ArgumentsMap>(commandInfo->arguments)));
 }
 
 

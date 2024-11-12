@@ -1,9 +1,7 @@
 #include "Command.hpp"
 
-Command::Command(std::shared_ptr<argumentsMap> args)
-{
-    _arguments = std::move(args);
-}
+Command::Command(std::unique_ptr<ArgumentsMap> args)
+    : _arguments(std::move(args)) {}
 
 int Command::indexValidate()
 {
