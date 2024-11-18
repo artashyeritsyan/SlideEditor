@@ -2,7 +2,7 @@
 
 void Editor::openNextSlide()
 {
-    if (currSlideIndex < _presentation.getSlidesSize() - 2) {
+    if (currSlideIndex < _presentation->getSlidesSize() - 2) {
         ++currSlideIndex;
     }
 }
@@ -18,20 +18,20 @@ void Editor::addSlide(int slideId)
 {
     std::shared_ptr<Slide> slide = std::make_unique<Slide>();
     if(slideId == 0) {
-        _presentation.addSlide(_presentation.getSlidesSize(), std::move(slide));
+        _presentation->addSlide(_presentation->getSlidesSize(), std::move(slide));
     }
     else {
-        _presentation.addSlide(--slideId, std::move(slide));
+        _presentation->addSlide(--slideId, std::move(slide));
     }
 }
 
 void Editor::removeSlide(int slideId)
 { 
     if(slideId == 0) {
-        _presentation.removeSlide(_presentation.getSlidesSize() - 1);
+        _presentation->removeSlide(_presentation->getSlidesSize() - 1);
     }
     else {
-        _presentation.removeSlide(--slideId);
+        _presentation->removeSlide(--slideId);
     }
 }
 
@@ -55,7 +55,7 @@ void Editor::removeSlide(int slideId)
 void Editor::printSlides() {
     int slideIndex = 0;
     
-    const auto& slides = _presentation.getAllSlides();
+    const auto& slides = _presentation->getAllSlides();
     for (const auto& slidePtr : slides) {
         if (slidePtr) {
             std::cout << "Slide " << slideIndex 
@@ -69,7 +69,7 @@ void Editor::printSlides() {
 
 void Editor::printItems()
 {
-    const auto &slide = _presentation.getSlideByIndex(currSlideIndex);
+    const auto &slide = _presentation->getSlideByIndex(currSlideIndex);
 
     for (const auto& item : slide->getAllItems()) {
         auto pos = item->getPosition();

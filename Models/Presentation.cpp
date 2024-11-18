@@ -1,6 +1,7 @@
 #include "Presentation.hpp"
 
-void Presentation::addSlide(int index, std::shared_ptr<Slide> slide) {
+void Presentation::addSlide(int index, std::shared_ptr<Slide> slide)
+{
     if (index == _slides.size()) {
         _slides.push_back(slide);
     }
@@ -16,8 +17,7 @@ void Presentation::removeSlide(int slideIndex) {
         _slides.erase(_slides.begin() + (slideIndex - 1));
     }
     else {
-        /// TODO: throw an excpetion
-        std::cerr << "index out of range" << std::endl;
+        throw CLIException("index out of range");
     }
 }
 
@@ -27,7 +27,7 @@ std::string Presentation::getName() const
 }
 
 const std::shared_ptr<Slide>& Presentation::getSlideByIndex(int index) {
-    return _slides[index].get();
+    return _slides[index];
 }
 
 // const std::vector<std::unique_ptr<Slide>> &Presentation::getAllSlides() const

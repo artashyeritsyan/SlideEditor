@@ -1,13 +1,14 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
-#include "Models/Presentation.hpp"
 #include <memory>
 #include <iostream>
 
+#include "Models/Presentation.hpp"
+
 class Editor {
 public:
-    explicit Editor(Presentation& pres) : _presentation(pres) {}
+    explicit Editor(std::shared_ptr<Presentation> pres) : _presentation(pres) {}
 
 
     // Slide 
@@ -57,7 +58,7 @@ public:
 
 private:
     size_t currSlideIndex = 0;
-    Presentation& _presentation;
+    std::shared_ptr<Presentation> _presentation;
 };
 
 #endif // EDITOR_HPP

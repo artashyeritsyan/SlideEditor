@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -std=c++20
+CXXFLAGS = -Wall -std=c++20 -g
 
 # Project directories
 SRC_DIR = .
@@ -18,7 +18,8 @@ SRCS = $(CLI_DIR)/Command.cpp \
        $(MODELS_DIR)/Presentation.cpp \
        $(MODELS_DIR)/Slide.cpp \
        $(SRC_DIR)/Controller.cpp \
-       $(SRC_DIR)/Editor.cpp
+       $(SRC_DIR)/Editor.cpp \
+       $(SRC_DIR)/main.cpp
 
 # Header files (included for completeness)
 HDRS = $(CLI_DIR)/Command.hpp \

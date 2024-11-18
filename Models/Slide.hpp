@@ -8,9 +8,6 @@
 
 class Slide {
 public:
-    Slide();
-    ~Slide() {}
-
     // int getItemsCount();
     
     // Print all items in slide, ordering bay their LayerOrder 

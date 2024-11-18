@@ -6,7 +6,7 @@
 
 class Presentation {
 public:
-    Presentation();
+    Presentation() = default;
     Presentation(const std::string& name, const std::vector<std::shared_ptr<Slide>> slides)
         : _name(name), _slides(slides) {}
 

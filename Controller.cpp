@@ -20,14 +20,14 @@ void Controller::startProgram()
             std::stringstream sInput(input);
 
             // Temporary solution
-            if(input != "exit" || input != "q") {
+            if(input == "exit" || input == "q") {
                 break;
             }
 
             std::shared_ptr<Command> command = _parser->parse(sInput);
             command->execute(_editor);
         }
-    } catch (const std::exception& e) {
-        std::cerr << "Parsing error: " << e.what() << std::endl;
+    } catch (const CLIException& ex) {
+        std::cerr << "CLI Error: " << ex.what() << std::endl;
     }
 }
