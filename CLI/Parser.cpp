@@ -12,5 +12,4 @@ std::shared_ptr<Command> Parser::parse(std::stringstream &input)
     std::shared_ptr<Command> command = _semanticAnalyser->startSemanticAnalize(commandInfo);
 
     return command;
-
 }

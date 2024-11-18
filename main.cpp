@@ -1,8 +1,8 @@
 #include "Controller.hpp"
 
 int main() {
-    Controller program;
-    program.startProgram();
+    Controller *program = new Controller;
+    program->startProgram();
     
     return 0;
 }

@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "../Enums/ItemTypeEnum.hpp"
+#include "../CLI/CLIException.hpp"
 
 class Item {
 public:

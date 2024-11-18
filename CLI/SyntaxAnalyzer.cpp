@@ -1,26 +1,56 @@
 #include "SyntaxAnalyzer.hpp"
 
 SyntaxAnalyzer::SyntaxAnalyzer() {
-   createCheckingMap();
+    createCheckingMap();
 }
 
 void SyntaxAnalyzer::createCheckingMap()
 {
-    _commandRules = {
-        {"addslide", {
-            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
-        }},
-        {"removeslide", {
-            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
-        }},
-        {"addshape", {
-            {"pos", [this](const std::string& value) { return this->positionValidation(value); }},
-            {"size", [this](const std::string& value) { return this->sizeValidation(value); }}
-        }},
-        {"removeshape", {
-            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+    // _commandRules = std::make_unique<ValueCheckingMap>();
+
+
+    // _commandRules = {
+    //     {"addslide", {
+    //         {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+    //     }},
+    //     {"removeslide", {
+    //         {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+    //     }},
+    //     {"addshape", {
+    //         {"pos", [this](const std::string& value) { return this->positionValidation(value); }},
+    //         {"size", [this](const std::string& value) { return this->sizeValidation(value); }}
+    //     }},
+    //     {"removeshape", {
+    //         {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+    //     }}
+    // };
+
+_commandRules = std::make_unique<ValueCheckingMap>(ValueCheckingMap{
+    {"addslide", {
+        {"id", [this](const std::string& value) -> VariantIntDoubleStr { 
+            return this->IdValidation(value); 
         }}
-    };
+    }},
+    {"removeslide", {
+        {"id", [this](const std::string& value) -> VariantIntDoubleStr { 
+            return this->IdValidation(value); 
+        }}
+    }},
+    {"addshape", {
+        {"pos", [this](const std::string& value) -> VariantIntDoubleStr { 
+            return this->positionValidation(value); 
+        }},
+        {"size", [this](const std::string& value) -> VariantIntDoubleStr { 
+            return this->sizeValidation(value); 
+        }}
+    }},
+    {"removeshape", {
+        {"id", [this](const std::string& value) -> VariantIntDoubleStr { 
+            return this->IdValidation(value); 
+        }}
+    }}
+});
+
 } 
 
 std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
@@ -40,7 +70,7 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstre
 
         else if (token->type == ETokenType::FLAG &&
         tokens.size() != 0 &&
-        tokens[tokens.size() - 1]->type != ETokenType::FLAG)
+        tokens[tokens.size() - 1]->type != ETokenType::FLAG)  
         {
             tokens.push_back(token);
         }
@@ -54,51 +84,66 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstre
         
         else 
         {
-            // TODO: write custom exceptions class and add this error to it
-            std::cerr << "Incorrect command order" << std::endl;
-            // return std::vector<SToken>();
+            throw CLIException("Incorrect command order");
             exit(0);
         }
         token = _tokenizer->nextToken();
     }
 
-    return std::move(checkCommandCorrectness(tokens));    
+    delete _tokenizer;
+    return checkCommandCorrectness(tokens);    
 }
 
 std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vector<std::shared_ptr<SToken>> tokens) {
 
-    /// TODO: talisa menak 1 bar piti 2 haty ta
-
-    std::string cmd = tokens[0]->value;
-
     std::shared_ptr<SCommandInfo> cmdInfo = std::make_unique<SCommandInfo>();
-    
+
     int i = 0;
     while (tokens[i]->type == ETokenType::WORD && i < tokens.size()) {
         cmdInfo->name += tokens[i++]->value;
     }
 
-    if (_commandRules.find(cmd) == _commandRules.end()) {
-        std::cerr << "Invalid command" << std::endl;
-        // throw an exception
+    // if (!_commandRules || _commandRules->find(cmdInfo->name) == _commandRules->end()) {
+    //     throw CLIException("Invalid command");
+    // }
+
+    auto& commandRules = *_commandRules;
+    auto commandIter = commandRules.find(cmdInfo->name);
+    if (commandIter == commandRules.end()) {
+        throw CLIException("Invalid command");
     }
+
+
     std::string flag;
     std::string value;
     while(i < tokens.size()) {
 
         if(tokens[i]->type == ETokenType::FLAG) {
             flag = tokens[i]->value;
+            ++i;
+            continue;
         }
         else if (tokens[i]->type == ETokenType::VALUE) {
             value = tokens[i]->value;
+            ++i;
         }
 
-        // if(_commandRules[cmd][flag](value)) {
-        //     cmdInfo->arguments[flag].push_back(value);
+        // auto& commandMap = (*_commandRules)[cmdInfo->name];
+        // if (commandMap.find(flag) == commandMap.end()) {
+        //     throw CLIException("Invalid argument - '" + flag + "'");
         // }
-        
-        /// TODO: stugel flagy ka te che find()-ov
-        cmdInfo->arguments[flag].push_back(_commandRules[cmd][flag](value));
+
+        // cmdInfo->arguments[flag].push_back(commandMap[flag](value));
+
+         // Use an iterator to access the flag map for the command
+        auto& flagMap = commandIter->second;
+        auto flagIter = flagMap.find(flag);
+        if (flagIter == flagMap.end()) {
+            throw CLIException("Invalid argument - '" + flag + "'");
+        }
+
+        // Call the validation function and store the result
+        cmdInfo->arguments[flag].push_back(flagIter->second(value));
 
     }
 
@@ -109,46 +154,61 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
 VariantIntDoubleStr SyntaxAnalyzer::positionValidation(const std::string& value)
 {
     try {
-        double position = std::stod(value);
+        double position = 0;
+
+        try {
+            position = std::stod(value);
+        } catch (const std::exception&) {
+            throw CLIException("Incorrect type");
+        }
+
         return position;
     }
-    catch (std::exception ex) {
-        // throw an exception 
-        std::cerr << "Incorrect type" << std::endl;
+    catch (const CLIException&) {
+        throw;
     }
 }
 
 VariantIntDoubleStr SyntaxAnalyzer::sizeValidation(const std::string &value)
 {
     try {
-        double sizeParam = std::stod(value);
+        double sizeParam = 0;
+        
+        try {
+            sizeParam = std::stod(value);
+        } catch (const std::exception& ex) {
+            throw CLIException("Incorrect type");
+        }
 
         if (sizeParam <= 0) {
-            // throw an exception
-            std::cerr << "Size cant be smaller or equal to 0" << std::endl;
+            throw CLIException("Size can't be smaller or equal to 0");
         }
+
         return sizeParam;
     }
-    catch (std::exception ex) {
-        // throw an exception
-        std::cerr << "Incorrect type" << std::endl;
+    catch (const CLIException& ex) {
+        throw;
     }
 }
 
 VariantIntDoubleStr SyntaxAnalyzer::IdValidation(const std::string &value)
 {
     try {
-        int id = std::stoi(value);
+        int id = 0;
+
+        try {
+            id = std::stoi(value);
+        } catch (const std::exception&) {
+            throw CLIException("Incorrect type");
+        }
 
         if (id <= 0) {
-            std::cerr << "Id cant be smaller or equal to 0" << std::endl;
-            // for exception class in future
-            // throw exception("Id cant be smaller or equal to 0");
+            throw CLIException("Id can't be smaller or equal to 0");
         }
+
         return id;
     }
-    catch (std::exception ex) {
-        // throw an exception 
-        std::cerr << "Incorrect type" << std::endl;
+    catch (const CLIException&) {
+        throw;
     }
 }

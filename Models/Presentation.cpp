@@ -17,8 +17,7 @@ void Presentation::removeSlide(int slideIndex) {
         _slides.erase(_slides.begin() + (slideIndex - 1));
     }
     else {
-        /// TODO: throw an excpetion
-        std::cerr << "index out of range" << std::endl;
+        throw CLIException("index out of range");
     }
 }
 

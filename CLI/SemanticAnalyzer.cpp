@@ -2,10 +2,11 @@
 
 SemanticAnalyser::SemanticAnalyser(std::shared_ptr<Presentation> pr)
 {
+    _commandMap = std::make_unique<CommandsMap>();
+    _editor = std::make_shared<Editor>(pr);
+    
     initializeCmdMap();
 
-    _editor = std::make_shared<Editor>(pr);
-    _commandMap = std::make_unique<CommandsMap>();
 
 }
 
@@ -28,8 +29,7 @@ std::unique_ptr<Command> SemanticAnalyser::startSemanticAnalize(const std::share
 std::unique_ptr<Command> SemanticAnalyser::createCommand(const std::shared_ptr<SCommandInfo> &commandInfo)
 {
     if(_commandMap->find(commandInfo->name) == _commandMap->end()) {
-        // throw an exception "Semantic error, Wrong command"
-        std::cerr << "Semantic error, Wrong command" << std::endl;
+        throw CLIException("Semantic error, Wrong command");
     }
 
     return std::move((*_commandMap)[commandInfo->name](std::make_unique<ArgumentsMap>(commandInfo->arguments)));

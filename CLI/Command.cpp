@@ -6,14 +6,10 @@ Command::Command(std::unique_ptr<ArgumentsMap> args)
 int Command::indexValidate()
 {
     int slideIndex = -1;
-    if(_arguments->find("i") == _arguments->end()) {
-        std::cerr << "Error: Missing required argument 'i' for slide index." << std::endl;
-        return slideIndex;
-    }
 
     auto it = _arguments->find("i");
     if (it == _arguments->end()) {
-        std::cerr << "Error: Missing required argument 'i' for slide index." << std::endl;
+        throw CLIException("Missing required argument '-i' for slide index.");
         return slideIndex;
     }
 

@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 
+#include "CLIException.hpp"
 #include "Token.hpp"
 
 
