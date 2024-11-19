@@ -59,7 +59,7 @@ void Editor::printSlides() {
     for (const auto& slidePtr : slides) {
         if (slidePtr) {
             std::cout << "Slide " << slideIndex 
-                        << ": Item count = " << slidePtr->getAllItems().size()
+                        << ": Items count = " << slidePtr->getAllItems().size()
                         << std::endl;
         }
         ++slideIndex;
