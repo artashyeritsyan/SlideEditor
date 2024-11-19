@@ -7,9 +7,9 @@ int Command::indexValidate()
 {
     int slideIndex = -1;
 
-    auto it = _arguments->find("i");
+    auto it = _arguments->find("id");
     if (it == _arguments->end()) {
-        throw CLIException("Missing required argument '-i' for slide index.");
+        throw CLIException("Missing required argument '-id' for slide index.");
         return slideIndex;
     }
 
@@ -37,4 +37,9 @@ void CmdAddShape::execute(std::shared_ptr<Editor>& editor)
 
 void CmdRemoveShape::execute(std::shared_ptr<Editor>& editor)
 {
+}
+
+void CmdSlideList::execute(std::shared_ptr<Editor> &editor)
+{
+    editor->printSlides();
 }

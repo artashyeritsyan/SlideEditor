@@ -6,51 +6,22 @@ SyntaxAnalyzer::SyntaxAnalyzer() {
 
 void SyntaxAnalyzer::createCheckingMap()
 {
-    // _commandRules = std::make_unique<ValueCheckingMap>();
-
-
-    // _commandRules = {
-    //     {"addslide", {
-    //         {"id", [this](const std::string& value) { return this->IdValidation(value); }}
-    //     }},
-    //     {"removeslide", {
-    //         {"id", [this](const std::string& value) { return this->IdValidation(value); }}
-    //     }},
-    //     {"addshape", {
-    //         {"pos", [this](const std::string& value) { return this->positionValidation(value); }},
-    //         {"size", [this](const std::string& value) { return this->sizeValidation(value); }}
-    //     }},
-    //     {"removeshape", {
-    //         {"id", [this](const std::string& value) { return this->IdValidation(value); }}
-    //     }}
-    // };
-
-_commandRules = std::make_unique<ValueCheckingMap>(ValueCheckingMap{
-    {"addslide", {
-        {"id", [this](const std::string& value) -> VariantIntDoubleStr { 
-            return this->IdValidation(value); 
-        }}
-    }},
-    {"removeslide", {
-        {"id", [this](const std::string& value) -> VariantIntDoubleStr { 
-            return this->IdValidation(value); 
-        }}
-    }},
-    {"addshape", {
-        {"pos", [this](const std::string& value) -> VariantIntDoubleStr { 
-            return this->positionValidation(value); 
+    _commandRules = {
+        {"addslide", {
+            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
         }},
-        {"size", [this](const std::string& value) -> VariantIntDoubleStr { 
-            return this->sizeValidation(value); 
-        }}
-    }},
-    {"removeshape", {
-        {"id", [this](const std::string& value) -> VariantIntDoubleStr { 
-            return this->IdValidation(value); 
-        }}
-    }}
-});
-
+        {"removeslide", {
+            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+        }},
+        {"addshape", {
+            {"pos", [this](const std::string& value) { return this->positionValidation(value); }},
+            {"size", [this](const std::string& value) { return this->sizeValidation(value); }}
+        }},
+        {"removeshape", {
+            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+        }},
+        {"slidelist", {}}
+    };
 } 
 
 std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
@@ -91,7 +62,7 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstre
     }
 
     delete _tokenizer;
-    return checkCommandCorrectness(tokens);    
+    return checkCommandCorrectness(tokens);
 }
 
 std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vector<std::shared_ptr<SToken>> tokens) {
@@ -99,20 +70,17 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
     std::shared_ptr<SCommandInfo> cmdInfo = std::make_unique<SCommandInfo>();
 
     int i = 0;
-    while (tokens[i]->type == ETokenType::WORD && i < tokens.size()) {
+    while (i < tokens.size() && tokens[i]->type == ETokenType::WORD) {
         cmdInfo->name += tokens[i++]->value;
     }
 
-    // if (!_commandRules || _commandRules->find(cmdInfo->name) == _commandRules->end()) {
-    //     throw CLIException("Invalid command");
-    // }
-
-    auto& commandRules = *_commandRules;
-    auto commandIter = commandRules.find(cmdInfo->name);
-    if (commandIter == commandRules.end()) {
+    if (_commandRules.find(cmdInfo->name) == _commandRules.end()) {
         throw CLIException("Invalid command");
     }
-
+    // if the command has no arguments just return only the name of command
+    if(_commandRules[cmdInfo->name].size() == 0) {
+        return cmdInfo;
+    }
 
     std::string flag;
     std::string value;
@@ -128,22 +96,12 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
             ++i;
         }
 
-        // auto& commandMap = (*_commandRules)[cmdInfo->name];
-        // if (commandMap.find(flag) == commandMap.end()) {
-        //     throw CLIException("Invalid argument - '" + flag + "'");
-        // }
-
-        // cmdInfo->arguments[flag].push_back(commandMap[flag](value));
-
-         // Use an iterator to access the flag map for the command
-        auto& flagMap = commandIter->second;
-        auto flagIter = flagMap.find(flag);
-        if (flagIter == flagMap.end()) {
+        auto& commandMap = _commandRules[cmdInfo->name];
+        if (commandMap.find(flag) == commandMap.end()) {
             throw CLIException("Invalid argument - '" + flag + "'");
         }
 
-        // Call the validation function and store the result
-        cmdInfo->arguments[flag].push_back(flagIter->second(value));
+        cmdInfo->arguments[flag].push_back(commandMap[flag](value));
 
     }
 

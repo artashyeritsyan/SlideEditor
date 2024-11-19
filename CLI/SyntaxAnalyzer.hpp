@@ -18,8 +18,7 @@ public:
 
 private:
     Tokenizer* _tokenizer;
-    // ValueCheckingMap _commandRules;
-    std::unique_ptr<ValueCheckingMap> _commandRules;
+    ValueCheckingMap _commandRules;
 
 private:
     std::shared_ptr<SCommandInfo> checkCommandCorrectness(std::vector<std::shared_ptr<SToken>> tokens);
