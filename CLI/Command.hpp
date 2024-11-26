@@ -25,7 +25,8 @@ public:
     virtual void execute(std::shared_ptr<Editor>& editor) = 0;
 
 protected:
-    int indexValidate() ;
+    int idValidate();
+    std::pair<int, int> idPairValidation();
     std::unique_ptr<ArgumentsMap> _arguments;
 };
 
@@ -56,6 +57,12 @@ public:
 class CmdSlideList : public Command {
 public:
     CmdSlideList(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};
+
+class CmdMoveSlide : public Command {
+public:
+    CmdMoveSlide(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
     void execute(std::shared_ptr<Editor>& editor) override;
 };
 

@@ -8,10 +8,15 @@ void SyntaxAnalyzer::createCheckingMap()
 {
     _commandRules = {
         {"addslide", {
-            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+            {"id", [this](const std::string& value) { return this->IdValidation(value); }},
+            {"none", nullptr }
         }},
         {"removeslide", {
-            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+            {"id", [this](const std::string& value) { return this->IdValidation(value); }},
+            {"none", nullptr }
+        }},
+        {"moveslide", {
+            {"id", [this](const std::string& value) { return this->IdValidation(value); }},
         }},
         {"addshape", {
             {"pos", [this](const std::string& value) { return this->positionValidation(value); }},
@@ -20,7 +25,10 @@ void SyntaxAnalyzer::createCheckingMap()
         {"removeshape", {
             {"id", [this](const std::string& value) { return this->IdValidation(value); }}
         }},
-        {"slidelist", {}}
+        {"slidelist", {{"none", nullptr }}},
+        {"itemlist", {{"none", nullptr }}},
+        {"nextslide", {{"none", nullptr }}},
+        {"prevslide", {{"none", nullptr }}}, 
     };
 } 
 
@@ -69,7 +77,7 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
 
     std::shared_ptr<SCommandInfo> cmdInfo = std::make_unique<SCommandInfo>();
 
-    int i = 0;
+    size_t i = 0;
     while (i < tokens.size() && tokens[i]->type == ETokenType::WORD) {
         cmdInfo->name += tokens[i++]->value;
     }
@@ -78,9 +86,19 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
         throw CLIException("Invalid command");
     }
     // if the command has no arguments just return only the name of command
-    if(_commandRules[cmdInfo->name].size() == 0) {
-        return cmdInfo;
+    
+    if (i == tokens.size() ) {
+        if (_commandRules[cmdInfo->name].find("none") != _commandRules[cmdInfo->name].end()) {
+            return cmdInfo;
+        }
+        else {
+            throw CLIException("Expected arguments");
+        }
     }
+
+    // if(_commandRules[cmdInfo->name].size() == 0) {
+    //     return cmdInfo;
+    // }
 
     std::string flag;
     std::string value;
@@ -90,7 +108,7 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
             flag = tokens[i]->value;
             ++i;
             continue;
-        }
+        }  
         else if (tokens[i]->type == ETokenType::VALUE) {
             value = tokens[i]->value;
             ++i;
@@ -103,6 +121,10 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
 
         cmdInfo->arguments[flag].push_back(commandMap[flag](value));
 
+    }
+    
+    if (cmdInfo->arguments.size() == 0) {
+        throw CLIException("Invalid argument");
     }
 
     return cmdInfo;

@@ -18,7 +18,8 @@ void SemanticAnalyser::initializeCmdMap()
         { "addshape", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdAddShape>(std::move(args)); } },
         { "removeslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdRemoveSlide>(std::move(args)); } },
         { "removeshape", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdRemoveShape>(std::move(args)); } },
-        { "slidelist", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdSlideList>(std::move(args)); } }
+        { "slidelist", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdSlideList>(std::move(args)); } },
+        { "moveslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdMoveSlide>(std::move(args)); } }
     };
 }
 

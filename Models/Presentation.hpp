@@ -14,25 +14,25 @@ public:
     // Command functions
     /// TODO: Write an implementation for this functions 
 
-    void addSlide(int index, std::shared_ptr<Slide> slide);
+    // void addSlide(int index, std::shared_ptr<Slide> slide);
+    // void removeSlide(int index);
+    // void moveSlide(int slideId, int newPosition);
 
     int getSlidesSize();
-    const std::shared_ptr<Slide>& getSlideByIndex(int index);
-    const std::vector<std::shared_ptr<Slide>>& getAllSlides() const;
-    void removeSlide(int index);
-    // void nextSlide();
-    // void prevSlide();
-    void moveSlide(int slideId, int newPosition);
+    const std::shared_ptr<Slide>& getSlideByIndex(size_t index);
+    std::vector<std::shared_ptr<Slide>>& getSlides();
+    void nextSlide();
+    void prevSlide();
+    size_t getCurrentSlideIndex();
     void copySlide(int slideId, int copiedSlideId);
 
     std::string getName() const;
     void setName(const std::string& value);
-    int getCurrentSlideIndex();
 
 private:
     std::string _name;
     std::vector<std::shared_ptr<Slide>> _slides;
-    // int currentSlideIndex = 0;
+    size_t _currentSlideIndex = 0;
 };
 
 
