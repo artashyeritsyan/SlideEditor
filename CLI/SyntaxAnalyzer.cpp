@@ -18,6 +18,11 @@ void SyntaxAnalyzer::createCheckingMap()
         {"moveslide", {
             {"id", [this](const std::string& value) { return this->IdValidation(value); }},
         }},
+        {"slidelist", {{"none", nullptr }}},
+        {"itemlist", {{"none", nullptr }}},
+        {"nextslide", {{"none", nullptr }}},
+        {"prevslide", {{"none", nullptr }}}, 
+        
         {"addshape", {
             {"pos", [this](const std::string& value) { return this->positionValidation(value); }},
             {"size", [this](const std::string& value) { return this->sizeValidation(value); }}
@@ -25,10 +30,6 @@ void SyntaxAnalyzer::createCheckingMap()
         {"removeshape", {
             {"id", [this](const std::string& value) { return this->IdValidation(value); }}
         }},
-        {"slidelist", {{"none", nullptr }}},
-        {"itemlist", {{"none", nullptr }}},
-        {"nextslide", {{"none", nullptr }}},
-        {"prevslide", {{"none", nullptr }}}, 
     };
 } 
 
