@@ -8,21 +8,67 @@ void SyntaxAnalyzer::createCheckingMap()
 {
     _commandRules = {
         {"addslide", {
-            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+            {"id", [this](const std::string& value) { return this->idValidation(value); }},
+            {"none", nullptr }
         }},
         {"removeslide", {
-            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
+            {"id", [this](const std::string& value) { return this->idValidation(value); }},
+            {"none", nullptr }
         }},
-        {"addshape", {
+        {"moveslide", {
+            {"id", [this](const std::string& value) { return this->idValidation(value); }},
+            {"newid", [this](const std::string& value) { return this->idValidation(value); }}
+        }},
+        {"slidelist", {{"none", nullptr }}},
+        {"itemlist", {{"none", nullptr }}},
+        {"nextslide", {{"none", nullptr }}},
+        {"prevslide", {{"none", nullptr }}},
+
+        {"addtext", {
             {"pos", [this](const std::string& value) { return this->positionValidation(value); }},
+            {"size", [this](const std::string& value) { return this->sizeValidation(value); }},
+            {"t", [this](const std::string& value) { return value; }}, /// TODO: Add text validation 
+            {"none", nullptr }
+        }},
+        {"addrect", createItemCommand()},
+        {"addcircle", createItemCommand()},
+        {"addtriangle", createItemCommand()},
+        // {"addline", createItemCommand()},
+        {"removeitem", {
+            addIdNameValidationCommand()
+        }},
+        {"moveitem", {
+            {"id", [this](const std::string& value) { return this->idValidation(value); }},
+            {"name", [this](const std::string& value) { return this->nameValidation(value); }},
+            {"pos", [this](const std::string& value) { return this->positionValidation(value); }}
+        }},
+        {"changesize", {
+            {"id", [this](const std::string& value) { return this->idValidation(value); }},
+            {"name", [this](const std::string& value) { return this->nameValidation(value); }},
             {"size", [this](const std::string& value) { return this->sizeValidation(value); }}
         }},
-        {"removeshape", {
-            {"id", [this](const std::string& value) { return this->IdValidation(value); }}
-        }},
-        {"slidelist", {}}
+        {"renameitem", addIdNameValidationCommand()},
+        {"bringforward", addIdNameValidationCommand()},
+        {"sendbackward", addIdNameValidationCommand()},
+        {"bringtofront", addIdNameValidationCommand()},
+        {"sendtoback", addIdNameValidationCommand()}
     };
-} 
+}
+
+std::unordered_map<std::string, std::function<VariantIntDoubleStr(const std::string&)>> SyntaxAnalyzer::addIdNameValidationCommand() {
+    return {
+        {"id", [this](const std::string& value) { return this->idValidation(value); }},
+        {"name", [this](const std::string& value) { return this->nameValidation(value); }}
+    };
+}
+
+std::unordered_map<std::string, std::function<VariantIntDoubleStr(const std::string&)>> SyntaxAnalyzer::createItemCommand() {
+    return {
+        {"pos", [this](const std::string& value) { return this->positionValidation(value); }},
+        {"size", [this](const std::string& value) { return this->sizeValidation(value); }},
+        {"none", nullptr }
+    };
+}
 
 std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstream &input)
 {
@@ -69,7 +115,7 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
 
     std::shared_ptr<SCommandInfo> cmdInfo = std::make_unique<SCommandInfo>();
 
-    int i = 0;
+    size_t i = 0;
     while (i < tokens.size() && tokens[i]->type == ETokenType::WORD) {
         cmdInfo->name += tokens[i++]->value;
     }
@@ -78,9 +124,19 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
         throw CLIException("Invalid command");
     }
     // if the command has no arguments just return only the name of command
-    if(_commandRules[cmdInfo->name].size() == 0) {
-        return cmdInfo;
+    
+    if (i == tokens.size() ) {
+        if (_commandRules[cmdInfo->name].find("none") != _commandRules[cmdInfo->name].end()) {
+            return cmdInfo;
+        }
+        else {
+            throw CLIException("Expected arguments");
+        }
     }
+
+    // if(_commandRules[cmdInfo->name].size() == 0) {
+    //     return cmdInfo;
+    // }
 
     std::string flag;
     std::string value;
@@ -90,7 +146,7 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
             flag = tokens[i]->value;
             ++i;
             continue;
-        }
+        }  
         else if (tokens[i]->type == ETokenType::VALUE) {
             value = tokens[i]->value;
             ++i;
@@ -102,12 +158,14 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
         }
 
         cmdInfo->arguments[flag].push_back(commandMap[flag](value));
-
+    }
+    
+    if (cmdInfo->arguments.size() == 0) {
+        throw CLIException("Invalid argument");
     }
 
     return cmdInfo;
 }
-
 
 VariantIntDoubleStr SyntaxAnalyzer::positionValidation(const std::string& value)
 {
@@ -122,7 +180,7 @@ VariantIntDoubleStr SyntaxAnalyzer::positionValidation(const std::string& value)
 
         return position;
     }
-    catch (const CLIException&) {
+    catch (const CLIException& ex) {
         throw;
     }
 }
@@ -149,7 +207,7 @@ VariantIntDoubleStr SyntaxAnalyzer::sizeValidation(const std::string &value)
     }
 }
 
-VariantIntDoubleStr SyntaxAnalyzer::IdValidation(const std::string &value)
+VariantIntDoubleStr SyntaxAnalyzer::idValidation(const std::string &value)
 {
     try {
         int id = 0;
@@ -166,7 +224,20 @@ VariantIntDoubleStr SyntaxAnalyzer::IdValidation(const std::string &value)
 
         return id;
     }
-    catch (const CLIException&) {
+    catch (const CLIException& ex) {
         throw;
     }
+}
+
+VariantIntDoubleStr SyntaxAnalyzer::nameValidation(const std::string &value)
+{
+    if (value.empty()) {
+        throw CLIException("Name cannot be empty");
+    }
+
+    if (!std::isalpha(value[0])) {
+        throw CLIException("Name must start with an alphabetic character");
+    }
+
+    return value;
 }

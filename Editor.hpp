@@ -16,17 +16,21 @@ public:
     void removeSlide(int slideId);
     void openNextSlide();
     void openPrevSlide();
-    void openSlideById(int slideId);
-    void moveSlide(int slideId, int newId);
-    void copySlide(int slideId, int newSlidePosition);
+    void moveSlide(size_t slideId, size_t newId);
+    void openSlideById(size_t slideId);
+    void copySlide(size_t slideId, size_t newSlidePosition);
     // std::vector<Slide> slidesList(); //print or just return vector of slides
 
-
     // Items
-    void addShape(std::shared_ptr<Item> shape);
+    // void addItem(std::shared_ptr<Item> shape);
+    void addItem(ItemTypeEnum type, std::pair<double, double> position, std::pair<double, double> size, const std::string& content = "");
+    void removeItem(int id);
+
+    void moveItem(size_t id, std::pair<int, int> newPosition);
+    void changeItemName(size_t id, std::string newName); 
+
     // void addText(std::string content = "", int x = 0, int y = 0, int widht, int height);
     // void addImage(std::string imagePath, int x = 0, int y = 0, int widht, int height);
-    void removeItem(int index);
     // std::vector<Item> itemsList(int slideId);
 
     // Print on screen

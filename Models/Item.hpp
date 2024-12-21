@@ -6,50 +6,48 @@
 
 #include "../Enums/ItemTypeEnum.hpp"
 #include "../CLI/CLIException.hpp"
+#include "Text.hpp"
 
 class Item {
 public:
-    Item (const std::string& name, ItemTypeEnum type, int layerOrder, const std::pair<int, int>& position);
-    Item() = default;
+    Item (ItemTypeEnum type, int layerOrder, std::pair<int, int> position, int _width, int _height);
+    Item(ItemTypeEnum type, int layerOrder, int x, int y, int _width, int _height);
+    Item();
 
-    size_t getId() const { return id; }
-    std::string getName() const { return name; }
-    ItemTypeEnum getType() const { return type; }
-    std::pair<int, int> getPosition() const { return position; }
-    size_t getLayer() const { return layerOrder; }
-    int getWidth() const { return width; }
-    int getHeight() const { return height; }
+    size_t getId() const;
+    std::string getName() const;
+    ItemTypeEnum getType() const;
+    std::pair<double, double> getPosition() const;
+    double getX() const;
+    double getY() const;
+    size_t getLayer() const;
+    int getWidth() const;
+    int getHeight() const;
+    std::string& getTextContent() const;
 
-    void setId(size_t newId) { id = newId; }
-    void setName(const std::string& newName) { name = newName; }
-    void setType(ItemTypeEnum newType) { type = newType; }
-    void setPosition(std::pair<int, int> newPosition) { position = newPosition; }
-    void setPosition(int x, int y) { position = {x, y}; }
-    void setLayer(size_t newLayerOrder) { layerOrder = newLayerOrder; }
-    void setWidth(int newWidth) { width = newWidth; }
-    void setHeight(int newHeight) { height = newHeight; }
+    void setName(const std::string& newName);
+    void setType(ItemTypeEnum newType);
+    void setPosition(std::pair<int, int> newPosition);
+    void setPosition(int x, int y);
+    void setLayer(size_t newLayerOrder);
+    void setWidth(int newWidth);
+    void setHeight(int newHeight);
+    void setTextContent(const std::string& content);
+    void setText(std::shared_ptr<Text> text);
 
-    void bringForward();
-    void sendBackward();
-    void bringToFront();
-    void sendToBack();
+private:
+    void generateName();
 
+    static size_t nextId;
     size_t id;
-    std::string name;
-    ItemTypeEnum type = Text;
-    size_t layerOrder;
-    std::pair<int, int> position = {0, 0};
-    int width = 10;
-    int height = 10;
+    std::string _name;
+    ItemTypeEnum _type = ItemTypeEnum::Rectangle;
+    size_t _layerOrder;
+    std::pair<double, double> _position;
+    int _width;
+    int _height;
 
-    // Parameters for textBox
-    std::string data = "";
-    int textSize = 9;
-    std::string font = "Arial";
-
-    bool italic = false;
-    bool bold = false; 
-    bool underlined = false;
+    std::shared_ptr<Text> _text = nullptr;
 
 };
 
