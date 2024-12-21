@@ -13,14 +13,18 @@ public:
     // Print all items in slide, ordering by their LayerOrder 
     std::vector<std::shared_ptr<Item>>& getAllItems();
 
-    void addItem(ItemTypeEnum type, std::pair<int, int> position);
+    void addItem(ItemTypeEnum type, std::pair<double, double> position, double width, double height, const std::string& text);
+    // void addItem(ItemTypeEnum type, double x, double y);
+    void addItem(std::shared_ptr<Item> item);
 
-    /// TODO: Change the logic for index, add Id to every item and use itemId for finding item in vector
-    void removeItem(int itemIndex);
-    void removeItem(const std::string& name);
-    void renameItem(int itemIndex, const std::string& newName);
-    void changePosition(int itemIndex);
+    void removeItem(int id);
+    // void removeItem(const std::string& name);
+    void renameItem(size_t id, const std::string& newName);
     void renameItem(const std::string& name, const std::string& newName);
+    void changePosition(size_t id, std::pair<double, double> newPosition);
+    void setText(size_t id, const std::string& text);
+    
+    std::vector<std::shared_ptr<Item>>& getItemList();
 
     void bringItemForward(size_t id);
     void sendItemBackward(size_t id);
@@ -28,10 +32,12 @@ public:
     void sendItemToBack(size_t id);
 
 private:
-    void nameRepeatingCheck(std::string name); 
+    bool nameRepeatingCheck(std::string name); 
     size_t findMaxOrder();
     void orderByLayer();
     std::vector<std::shared_ptr<Item>>::iterator getItemById(size_t id);
+    std::vector<std::shared_ptr<Item>>::iterator getItemByName(const std::string &name);
+
 
 
     std::vector<std::shared_ptr<Item>> _items;

@@ -26,7 +26,6 @@ private:
     std::shared_ptr<SToken> parseFlag();
     std::shared_ptr<SToken> parseValue();
     std::shared_ptr<SToken> parseWord();
-
 };
 
 #endif // TOKENIZER_HPP

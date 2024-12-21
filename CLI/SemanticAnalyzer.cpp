@@ -14,12 +14,21 @@ void SemanticAnalyser::initializeCmdMap()
 {
 // Use pattern Prototype to create the prototypes of each Command Class with their own default values and then just copy it and change values if needed
     *_commandMap = {
-        { "addslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdAddSlide>(std::move(args)); } },
-        { "addshape", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdAddShape>(std::move(args)); } },
-        { "removeslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdRemoveSlide>(std::move(args)); } },
-        { "removeshape", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdRemoveShape>(std::move(args)); } },
-        { "slidelist", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdSlideList>(std::move(args)); } },
-        { "moveslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<CmdMoveSlide>(std::move(args)); } }
+        { "addslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddSlideCommand>(std::move(args)); }},
+        { "removeslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RemoveSlideCommand>(std::move(args)); }},
+        { "slidelist", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<SlideListCommand>(std::move(args)); }},
+        { "moveslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<MoveSlideCommand>(std::move(args)); }},
+        { "nextslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<NextSlideCommand>(std::move(args)); }},
+        { "prevslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<PrevSlideCommand>(std::move(args)); }},
+        { "addrect", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddRectangleCommand>(std::move(args)); }},
+        { "addcircle", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddCircleCommand>(std::move(args)); }},
+        { "addtriangle", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddTriangleCommand>(std::move(args)); }},
+        { "addtext", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddTextCommand>(std::move(args)); }},
+        { "removeshape", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RemoveItemCommand>(std::move(args)); }},
+        { "moveitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<MoveItemCommand>(std::move(args)); }},
+        { "changesize", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ChangeSizeCommand>(std::move(args)); }},
+        { "renameitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RenameItemCommand>(std::move(args)); }},
+        { "itemlist", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
     };
 }
 

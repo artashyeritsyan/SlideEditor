@@ -14,6 +14,7 @@ SRCS = $(CLI_DIR)/Command.cpp \
        $(CLI_DIR)/SemanticAnalyzer.cpp \
        $(CLI_DIR)/SyntaxAnalyzer.cpp \
        $(CLI_DIR)/Tokenizer.cpp \
+       $(MODELS_DIR)/Text.cpp \
        $(MODELS_DIR)/Item.cpp \
        $(MODELS_DIR)/Presentation.cpp \
        $(MODELS_DIR)/Slide.cpp \
@@ -30,6 +31,7 @@ HDRS = $(CLI_DIR)/Command.hpp \
        $(ENUMS_DIR)/AlignTypeEnum.hpp \
        $(ENUMS_DIR)/ItemTypeEnum.hpp \
        $(ENUMS_DIR)/ShapeTypeEnum.hpp \
+       $(MODELS_DIR)/Text.hpp \
        $(MODELS_DIR)/Item.hpp \
        $(MODELS_DIR)/Presentation.hpp \
        $(MODELS_DIR)/Slide.hpp \

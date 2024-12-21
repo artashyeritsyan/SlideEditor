@@ -6,9 +6,10 @@
 class Text {
 public:
     Text() {}
+    Text(const std::string& data) : _content(data) {}
 
-    void setData(const std::string& data);
-    std::string getData() const;
+    void setContent(const std::string& data);
+    std::string getContent() const;
 
     void setTextSize(int textSize);
     int getTextSize() const;
@@ -26,13 +27,13 @@ public:
     bool getUnderlined() const;
     
 private:
-    std::string data = "";
-    int textSize = 9;
+    std::string _content = "";
+    int _textSize = 9;
     std::string font = "Arial";
 
-    bool italic = false;
-    bool bold = false; 
-    bool underlined = false;
+    bool _italic = false;
+    bool _bold = false; 
+    bool _underlined = false;
 };
 
 #endif // TEXT_HPP

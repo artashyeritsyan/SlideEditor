@@ -1,23 +1,23 @@
 #include "Text.hpp"
 
-void Text::setData(const std::string &data)
+void Text::setContent(const std::string &data)
 {
-    this->data = data;
+    this->_content = data;
 }
 
-std::string Text::getData() const
+std::string Text::getContent() const
 {
-    return data;
+    return _content;
 }
 
 void Text::setTextSize(int textSize)
 {
-    this->textSize = textSize;
+    this->_textSize = textSize;
 }
 
 int Text::getTextSize() const
 {
-    return textSize;
+    return _textSize;
 }
 
 void Text::setFont(const std::string &font)
@@ -32,30 +32,30 @@ std::string Text::getFont() const
 
 void Text::setItalic(bool italic)
 {
-    this->italic = italic;
+    this->_italic = italic;
 }
 
 bool Text::getItalic() const
 {
-    return italic;
+    return _italic;
 }
 
 void Text::setBold(bool bold)
 {
-    this->bold = bold;
+    this->_bold = bold;
 }
 
 bool Text::getBold() const
 {
-    return bold;
+    return _bold;
 }
 
 void Text::setUnderlined(bool underlined)
 {
-    this->underlined = underlined;
+    this->_underlined = underlined;
 }
 
 bool Text::getUnderlined() const
 {
-    return underlined;
+    return _underlined;
 }

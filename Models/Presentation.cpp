@@ -1,22 +1,5 @@
 #include "Presentation.hpp"
 
-// void Presentation::addSlide(int index, std::shared_ptr<Slide> slide)
-// {
-//     if (index == _slides.size()) {
-//         _slides.push_back(slide);
-//     }
-//     _slides.insert(_slides.begin() + index, slide);
-// }
-
-// void Presentation::removeSlide(int slideIndex) {
-//     if (slideIndex < _slides.size() && slideIndex > 0) {
-//         _slides.erase(_slides.begin() + (slideIndex - 1));
-//     }
-//     else {
-//         throw CLIException("index out of range");
-//     }
-// }
-
 int Presentation::getSlidesSize() {
     return _slides.size();
 }

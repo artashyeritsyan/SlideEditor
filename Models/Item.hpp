@@ -10,27 +10,30 @@
 
 class Item {
 public:
-    Item (ItemTypeEnum type, int layerOrder, const std::pair<int, int>& position);
-    Item(ItemTypeEnum type, int layerOrder, int x, int y);
+    Item (ItemTypeEnum type, int layerOrder, std::pair<int, int> position, int _width, int _height);
+    Item(ItemTypeEnum type, int layerOrder, int x, int y, int _width, int _height);
     Item();
 
-    size_t getId() const { return id; }
-    std::string getName() const { return _name; }
-    ItemTypeEnum getType() const { return _type; }
-    std::pair<double, double> getPosition() const { return _position; }
-    double getX() const { return _position.first; }
-    double getY() const { return _position.second; }
-    size_t getLayer() const { return _layerOrder; }
-    int getWidth() const { return _width; }
-    int getHeight() const { return _height; }
+    size_t getId() const;
+    std::string getName() const;
+    ItemTypeEnum getType() const;
+    std::pair<double, double> getPosition() const;
+    double getX() const;
+    double getY() const;
+    size_t getLayer() const;
+    int getWidth() const;
+    int getHeight() const;
+    std::string& getTextContent() const;
 
-    void setName(const std::string& newName) { _name = newName; }
-    void setType(ItemTypeEnum newType) { _type = newType; }
-    void setPosition(std::pair<int, int> newPosition) { _position = newPosition; }
-    void setPosition(int x, int y) { _position = {x, y}; }
-    void setLayer(size_t newLayerOrder) { _layerOrder = newLayerOrder; }
-    void setWidth(int newWidth) { _width = newWidth; }
-    void setHeight(int newHeight) { _height = newHeight; }
+    void setName(const std::string& newName);
+    void setType(ItemTypeEnum newType);
+    void setPosition(std::pair<int, int> newPosition);
+    void setPosition(int x, int y);
+    void setLayer(size_t newLayerOrder);
+    void setWidth(int newWidth);
+    void setHeight(int newHeight);
+    void setTextContent(const std::string& content);
+    void setText(std::shared_ptr<Text> text);
 
 private:
     void generateName();
@@ -40,9 +43,9 @@ private:
     std::string _name;
     ItemTypeEnum _type = ItemTypeEnum::Rectangle;
     size_t _layerOrder;
-    std::pair<double, double> _position = {0, 0};
-    int _width = 10;
-    int _height = 10;
+    std::pair<double, double> _position;
+    int _width;
+    int _height;
 
     std::shared_ptr<Text> _text = nullptr;
 

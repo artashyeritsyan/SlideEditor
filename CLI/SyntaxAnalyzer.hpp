@@ -17,16 +17,19 @@ public:
     std::shared_ptr<SCommandInfo> startSyntaxAnalize(std::stringstream& input);
 
 private:
-    Tokenizer* _tokenizer;
-    ValueCheckingMap _commandRules;
-
-private:
     std::shared_ptr<SCommandInfo> checkCommandCorrectness(std::vector<std::shared_ptr<SToken>> tokens);
+    std::unordered_map<std::string, std::function<VariantIntDoubleStr(const std::string&)>> createItemCommand();
+    std::unordered_map<std::string, std::function<VariantIntDoubleStr(const std::string&)>> addIdNameValidationCommand();
     void createCheckingMap();
 
     VariantIntDoubleStr positionValidation(const std::string& value);
     VariantIntDoubleStr sizeValidation(const std::string& value);
-    VariantIntDoubleStr IdValidation(const std::string& value); 
+    VariantIntDoubleStr idValidation(const std::string& value);
+    VariantIntDoubleStr nameValidation(const std::string& value);
+
+private:
+    Tokenizer* _tokenizer;
+    ValueCheckingMap _commandRules;
 };
 
 #endif // SYNTAX_HPP

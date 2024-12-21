@@ -18,7 +18,7 @@ std::shared_ptr<SToken> Tokenizer::nextToken() {
             _isFlagPassed = true;
             return parseFlag();
         } 
-        else if (isalnum(_currentChar)) {
+        else if (isalnum(_currentChar) || '"') {
             return parseValue();
         }
         
@@ -41,9 +41,20 @@ std::shared_ptr<SToken> Tokenizer::parseFlag() {
 
 std::shared_ptr<SToken> Tokenizer::parseValue() {
     std::string valueStr;
-    while (_inputStream && !isspace(_currentChar)) {
-        valueStr += _currentChar;
+
+    if (_currentChar == '"') {
         nextChar();
+        while (_inputStream && _currentChar != '"') {
+            valueStr += _currentChar;
+            nextChar();
+        }
+        nextChar();
+    }
+    else {
+        while (_inputStream && !isspace(_currentChar)) {
+            valueStr += _currentChar;
+            nextChar();
+        }
     }
     return std::make_unique<SToken>(ETokenType::VALUE, valueStr);
 }
