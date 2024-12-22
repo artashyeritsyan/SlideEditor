@@ -1,13 +1,10 @@
 #include "SemanticAnalyzer.hpp"
 
-SemanticAnalyser::SemanticAnalyser(std::shared_ptr<Presentation> pr)
+SemanticAnalyser::SemanticAnalyser()
 {
     _commandMap = std::make_unique<CommandsMap>();
-    _editor = std::make_shared<Editor>(pr);
     
     initializeCmdMap();
-
-
 }
 
 void SemanticAnalyser::initializeCmdMap()
@@ -23,7 +20,6 @@ void SemanticAnalyser::initializeCmdMap()
         { "addrect", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddRectangleCommand>(std::move(args)); }},
         { "addcircle", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddCircleCommand>(std::move(args)); }},
         { "addtriangle", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddTriangleCommand>(std::move(args)); }},
-        { "addtext", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddTextCommand>(std::move(args)); }},
         { "removeitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RemoveItemCommand>(std::move(args)); }},
         { "moveitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<MoveItemCommand>(std::move(args)); }},
         { "changesize", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ChangeSizeCommand>(std::move(args)); }},
@@ -32,7 +28,6 @@ void SemanticAnalyser::initializeCmdMap()
         { "sendbackward", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
         { "bringtofront", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
         { "sendtoback", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
-        // { "renameitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RenameItemCommand>(std::move(args)); }},
     };
 }
 

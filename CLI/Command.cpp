@@ -61,7 +61,7 @@ std::pair<double, double> Command::posOrSizeVerify(const std::string& flag)
     return result;
 }
 
-std::string Command::textValidate()
+std::string Command::textVerify()
 {
     std::string text = "";
     auto it = _arguments->find("t");
@@ -111,25 +111,19 @@ void PrevSlideCommand::execute(std::shared_ptr<Editor> &editor)
     editor->openPrevSlide();
 }
 
-void AddTextCommand::execute(std::shared_ptr<Editor> &editor)
-{
-    std::string content = textValidate();
-    editor->addItem(ItemTypeEnum::Rectangle, posOrSizeVerify("pos"), posOrSizeVerify("size"), content);
-}
-
 void AddRectangleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->addItem(ItemTypeEnum::Rectangle, posOrSizeVerify("pos"), posOrSizeVerify("size"));
+    editor->addItem(ItemTypeEnum::Rectangle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
 }
 
 void AddCircleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->addItem(ItemTypeEnum::Circle, posOrSizeVerify("pos"), posOrSizeVerify("size"));
+    editor->addItem(ItemTypeEnum::Circle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
 }
 
 void AddTriangleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->addItem(ItemTypeEnum::Triangle, posOrSizeVerify("pos"), posOrSizeVerify("size"));
+    editor->addItem(ItemTypeEnum::Triangle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
 }
 
 void RemoveItemCommand::execute(std::shared_ptr<Editor> &editor)
@@ -158,5 +152,5 @@ void ItemListCommand::execute(std::shared_ptr<Editor> &editor)
 
 void ChangeSizeCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->changeSize(idVerify(), posOrSizeVerify("size"));
+    editor->changeItemSize(idVerify(), posOrSizeVerify("size"));
 }

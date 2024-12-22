@@ -19,7 +19,7 @@ public:
 private:
     std::shared_ptr<SCommandInfo> checkCommandCorrectness(std::vector<std::shared_ptr<SToken>> tokens);
     std::unordered_map<std::string, std::function<VariantIntDoubleStr(const std::string&)>> createItemCommand();
-    std::unordered_map<std::string, std::function<VariantIntDoubleStr(const std::string&)>> addIdNameValidationCommand();
+    std::unordered_map<std::string, std::function<VariantIntDoubleStr(const std::string&)>> idNameValidationCommand();
     void createCheckingMap();
 
     VariantIntDoubleStr positionValidation(const std::string& value);
@@ -33,9 +33,3 @@ private:
 };
 
 #endif // SYNTAX_HPP
-
-// Unknown command
-// Incorrect command order
-// Syntax Error
-// 
-

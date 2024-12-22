@@ -28,7 +28,7 @@ protected:
     int idVerify();
     std::pair<int, int> idPairVerify();
     std::pair<double, double> posOrSizeVerify(const std::string& flag) ;
-    std::string textValidate();
+    std::string textVerify();
 
 protected:
     std::unique_ptr<ArgumentsMap> _arguments;
@@ -73,12 +73,6 @@ public:
 class AddRectangleCommand : public Command {
 public:
     AddRectangleCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
-    void execute(std::shared_ptr<Editor>& editor) override;
-};
-
-class AddTextCommand : public Command { 
-public:
-    AddTextCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
     void execute(std::shared_ptr<Editor>& editor) override;
 };
 

@@ -50,6 +50,18 @@ int Item::getHeight() const {
     return _height;
 }
 
+std::string Item::getTextContent() const 
+{
+    if (_text != nullptr) {
+        return _text->getContent();
+    }
+}
+
+bool Item::hasText() const
+{
+    return _text != nullptr;
+}
+
 void Item::setName(const std::string& newName) {
     _name = newName;
 }
@@ -80,6 +92,9 @@ void Item::setHeight(int newHeight) {
 
 void Item::setTextContent(const std::string &content)
 {
+    if (_text == nullptr) {
+        _text = std::make_shared<Text>();
+    }
     _text->setContent(content);
 }
 

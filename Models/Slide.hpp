@@ -18,7 +18,6 @@ public:
     void addItem(std::shared_ptr<Item> item);
 
     void removeItem(int id);
-    // void removeItem(const std::string& name);
     void renameItem(size_t id, const std::string& newName);
     void renameItem(const std::string& name, const std::string& newName);
     void moveItem(size_t id, std::pair<double, double> newPosition);

@@ -96,12 +96,18 @@ void Editor::printItems()
     for (const auto& item : slide->getAllItems()) {
         auto pos = item->getPosition();
         std::cout << "ID: " << item->getId()
-                    << ",  Name: " << item->getName() 
+                    << ", Name: " << item->getName() 
                     << ",  X: " << pos.first
                     << ",  Y: " << pos.second
                     << ",  W: " << item->getWidth()
-                    << ",  H: " << item->getHeight()
-                    << std::endl;
+                    << ",  H: " << item->getHeight();
+
+        if (item->hasText()) {
+            if (!item->getTextContent().empty()) {
+                std::cout << ",  Text: " << '"' << item->getTextContent() << '"';
+            }
+        }
+        std::cout << std::endl;
     }
 }
 
@@ -112,6 +118,7 @@ void Editor::addItem(ItemTypeEnum type, std::pair<double, double> position,
     if (slide == nullptr) {
         throw CLIException("You need to create slide first");
     }
+
     slide->addItem(type, position, size.first, size.second, content);
 }
 
@@ -133,7 +140,7 @@ void Editor::moveItem(size_t id, std::pair<int, int> newPosition)
     slide->moveItem(id, newPosition);
 }
 
-void Editor::changeSize(size_t id, std::pair<int, int> newSize)
+void Editor::changeItemSize(size_t id, std::pair<int, int> newSize)
 {
     auto& slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
     if(slide == nullptr) {

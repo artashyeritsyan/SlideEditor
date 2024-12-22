@@ -23,7 +23,8 @@ public:
     size_t getLayer() const;
     int getWidth() const;
     int getHeight() const;
-    std::string& getTextContent() const;
+    bool hasText() const;
+    std::string getTextContent() const;
 
     void setName(const std::string& newName);
     void setType(ItemTypeEnum newType);

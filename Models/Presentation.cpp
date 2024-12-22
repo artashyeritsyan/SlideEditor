@@ -4,7 +4,6 @@ int Presentation::getSlidesSize() {
     return _slides.size();
 }
 
-
 std::string Presentation::getName() const
 {
     return _name;
@@ -13,11 +12,6 @@ std::string Presentation::getName() const
 const std::shared_ptr<Slide>& Presentation::getSlideByIndex(size_t index) {
     return _slides[index];
 }
-
-// const std::vector<std::unique_ptr<Slide>> &Presentation::getSlides() const
-// {
-//     return _slides;
-// }
 
 std::vector<std::shared_ptr<Slide>>& Presentation::getSlides() {
     return _slides;

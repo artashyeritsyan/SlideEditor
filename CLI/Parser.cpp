@@ -3,7 +3,7 @@
 Parser::Parser(std::shared_ptr<Presentation> pr)
 {
     _syntaxAnalyzer = std::make_unique<SyntaxAnalyzer>();
-    _semanticAnalyser = std::make_unique<SemanticAnalyser>(pr);
+    _semanticAnalyser = std::make_unique<SemanticAnalyser>();
 }
 
 std::shared_ptr<Command> Parser::parse(std::stringstream &input)
