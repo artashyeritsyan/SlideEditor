@@ -1,5 +1,6 @@
 #include "Slide.hpp"
 
+Slide::Slide() : nextId(1) {}
 
 std::vector<std::shared_ptr<Item>> &Slide::getAllItems() {
     orderByLayer();
@@ -9,18 +10,14 @@ std::vector<std::shared_ptr<Item>> &Slide::getAllItems() {
 void Slide::addItem(ItemTypeEnum type, std::pair<double, double> position = {0, 0}, 
                     double width = 0, double height = 0, const std::string& content = "") {
 
-    auto tmpItem = std::make_shared<Item>(type, findMaxOrder() + 1, position, width, height);
+    auto tmpItem = std::make_shared<Item>(type, findMaxOrder() + 1, nextId++, position, width, height);
 
     if (content != "") {
-        tmpItem->setTextContent(content);
+        tmpItem->setTextContent(content);  ///TODO :: take a ynamic 
     }
     
     _items.push_back(tmpItem);
 }
-
-// void Slide::addItem(ItemTypeEnum type, double x, double y) {
-//     _items.push_back(std::make_shared<Item>(type, findMaxOrder() + 1, x, y));
-// }
 
 void Slide::addItem(std::shared_ptr<Item> item)
 {
@@ -37,20 +34,34 @@ void Slide::removeItem(int id) {
     }
 }
 
-// void Slide::removeItem(const std::string &name) {
-//     auto it = getItemByName(name);
-//     if (it != _items.end()) {
-//         _items.erase(it);
-//     }
-//     else {
-//         throw CLIException("Item with name " + name + " not found");
-//     }
-// }
 
 void Slide::renameItem(size_t id, const std::string &newName) {
     auto it = getItemById(id);
     if (it != _items.end()) {
         (*it)->setName(newName);
+    }
+}
+
+void Slide::moveItem(size_t id, std::pair<double, double> newPosition)
+{
+    auto it = getItemById(id);
+    if (it != _items.end()) {
+        (*it)->setPosition(newPosition);
+    }
+    else {
+        throw CLIException("Item with id " + std::to_string(id) + " not found");
+    }
+}
+
+void Slide::changeItemSize(size_t id, std::pair<double, double> newSize)
+{
+    auto it = getItemById(id);
+    if (it != _items.end()) {
+        (*it)->setWidth(newSize.first);
+        (*it)->setHeight(newSize.second);
+    }
+    else {
+        throw CLIException("Item with id " + std::to_string(id) + " not found");
     }
 }
 

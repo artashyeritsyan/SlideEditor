@@ -8,20 +8,20 @@
 
 class Slide {
 public:
+    Slide();
     // int getItemsCount();
     
     // Print all items in slide, ordering by their LayerOrder 
     std::vector<std::shared_ptr<Item>>& getAllItems();
 
     void addItem(ItemTypeEnum type, std::pair<double, double> position, double width, double height, const std::string& text);
-    // void addItem(ItemTypeEnum type, double x, double y);
     void addItem(std::shared_ptr<Item> item);
 
     void removeItem(int id);
-    // void removeItem(const std::string& name);
     void renameItem(size_t id, const std::string& newName);
     void renameItem(const std::string& name, const std::string& newName);
-    void changePosition(size_t id, std::pair<double, double> newPosition);
+    void moveItem(size_t id, std::pair<double, double> newPosition);
+    void changeItemSize(size_t id, std::pair<double, double> newSize);
     void setText(size_t id, const std::string& text);
     
     std::vector<std::shared_ptr<Item>>& getItemList();
@@ -39,7 +39,7 @@ private:
     std::vector<std::shared_ptr<Item>>::iterator getItemByName(const std::string &name);
 
 
-
+    size_t nextId = 1;
     std::vector<std::shared_ptr<Item>> _items;
 };
 

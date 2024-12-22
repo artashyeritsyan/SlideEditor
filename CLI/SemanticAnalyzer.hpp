@@ -9,7 +9,7 @@ using CommandsMap = std::unordered_map<std::string, std::function<std::unique_pt
 
 class SemanticAnalyser {
 public:
-    SemanticAnalyser(std::shared_ptr<Presentation> pr);
+    SemanticAnalyser();
 
     std::unique_ptr<Command> startSemanticAnalize(const std::shared_ptr<SCommandInfo>& cmdInfo);    
 
@@ -19,7 +19,6 @@ private:
 
 private:
     std::unique_ptr<CommandsMap> _commandMap;
-    std::shared_ptr<Editor> _editor;
 };
 
 #endif // SEMANTIC_HPP

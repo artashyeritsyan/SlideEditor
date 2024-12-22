@@ -10,9 +10,9 @@
 
 class Item {
 public:
-    Item (ItemTypeEnum type, int layerOrder, std::pair<int, int> position, int _width, int _height);
-    Item(ItemTypeEnum type, int layerOrder, int x, int y, int _width, int _height);
-    Item();
+    Item (ItemTypeEnum type, int layerOrder, size_t id, std::pair<int, int> position, int _width, int _height);
+    // Item(ItemTypeEnum type, int layerOrder, int x, int y, int _width, int _height, size_t id);
+    Item(size_t id);
 
     size_t getId() const;
     std::string getName() const;
@@ -23,7 +23,8 @@ public:
     size_t getLayer() const;
     int getWidth() const;
     int getHeight() const;
-    std::string& getTextContent() const;
+    bool hasText() const;
+    std::string getTextContent() const;
 
     void setName(const std::string& newName);
     void setType(ItemTypeEnum newType);
@@ -38,7 +39,6 @@ public:
 private:
     void generateName();
 
-    static size_t nextId;
     size_t id;
     std::string _name;
     ItemTypeEnum _type = ItemTypeEnum::Rectangle;

@@ -13,7 +13,6 @@ enum class ETokenType {
 struct SToken {
 public:
     ETokenType type;
-    // value need to be std::variant
     std::string value;
 
     SToken(ETokenType type, const std::string& value) : type(type), value(value) {}

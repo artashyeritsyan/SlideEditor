@@ -48,6 +48,9 @@ std::shared_ptr<SToken> Tokenizer::parseValue() {
             valueStr += _currentChar;
             nextChar();
         }
+        if (_currentChar != '"') {
+            throw CLIException("You must close the quotes");
+        }
         nextChar();
     }
     else {
