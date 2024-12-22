@@ -17,6 +17,7 @@ public:
     void openNextSlide();
     void openPrevSlide();
     void moveSlide(size_t slideId, size_t newId);
+    void changeSize(size_t slideId, std::pair<int, int> newSize);
     void openSlideById(size_t slideId);
     void copySlide(size_t slideId, size_t newSlidePosition);
     // std::vector<Slide> slidesList(); //print or just return vector of slides

@@ -123,3 +123,21 @@ void Editor::removeItem(int id)
     }
     slide->removeItem(id);
 }
+
+void Editor::moveItem(size_t id, std::pair<int, int> newPosition)
+{
+    auto& slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
+    if(slide == nullptr) {
+        throw CLIException("No slide found");
+    }
+    slide->moveItem(id, newPosition);
+}
+
+void Editor::changeSize(size_t id, std::pair<int, int> newSize)
+{
+    auto& slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
+    if(slide == nullptr) {
+        throw CLIException("No slide found");
+    }
+    slide->changeItemSize(id, newSize);
+}

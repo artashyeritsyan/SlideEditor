@@ -17,7 +17,7 @@ void SyntaxAnalyzer::createCheckingMap()
         }},
         {"moveslide", {
             {"id", [this](const std::string& value) { return this->idValidation(value); }},
-            {"newid", [this](const std::string& value) { return this->idValidation(value); }}
+            // {"newid", [this](const std::string& value) { return this->idValidation(value); }}
         }},
         {"slidelist", {{"none", nullptr }}},
         {"itemlist", {{"none", nullptr }}},

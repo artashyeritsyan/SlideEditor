@@ -1,18 +1,16 @@
 #include "Item.hpp"
 
-size_t Item::nextId = 1;
-
-Item::Item(ItemTypeEnum type, int layerOrder, std::pair<int, int> position = {0, 0}, int _width = 10, int _height = 10)
-    : _type(type), _layerOrder(layerOrder), _position(position), id(nextId++), _width(_width), _height(_height) {
+Item::Item(ItemTypeEnum type, int layerOrder, size_t id, std::pair<int, int> position = {0, 0}, int _width = 10, int _height = 10)
+    : _type(type), _layerOrder(layerOrder), _position(position), id(id), _width(_width), _height(_height) {
     generateName();
 }
 
-Item::Item(ItemTypeEnum type, int layerOrder, int x = 0, int y = 0, int _width = 10, int _height = 10)
-    : _type(type), _layerOrder(layerOrder), _position({x, y}), id(nextId++), _width(_width), _height(_height) {
-    generateName();
-}
+// Item::Item(ItemTypeEnum type, int layerOrder, int x = 0, int y = 0, int _width = 10, int _height = 10, size_t id)
+//     : _type(type), _layerOrder(layerOrder), _position({x, y}), id(id), _width(_width), _height(_height) {
+//     generateName();
+// }
 
-Item::Item() : id(nextId++) {
+Item::Item(size_t id) : id(id) {
     generateName();
 }
 

@@ -1,5 +1,6 @@
 #include "Slide.hpp"
 
+Slide::Slide() : nextId(1) {}
 
 std::vector<std::shared_ptr<Item>> &Slide::getAllItems() {
     orderByLayer();
@@ -9,7 +10,7 @@ std::vector<std::shared_ptr<Item>> &Slide::getAllItems() {
 void Slide::addItem(ItemTypeEnum type, std::pair<double, double> position = {0, 0}, 
                     double width = 0, double height = 0, const std::string& content = "") {
 
-    auto tmpItem = std::make_shared<Item>(type, findMaxOrder() + 1, position, width, height);
+    auto tmpItem = std::make_shared<Item>(type, findMaxOrder() + 1, nextId++, position, width, height);
 
     if (content != "") {
         tmpItem->setTextContent(content);
@@ -51,6 +52,29 @@ void Slide::renameItem(size_t id, const std::string &newName) {
     auto it = getItemById(id);
     if (it != _items.end()) {
         (*it)->setName(newName);
+    }
+}
+
+void Slide::moveItem(size_t id, std::pair<double, double> newPosition)
+{
+    auto it = getItemById(id);
+    if (it != _items.end()) {
+        (*it)->setPosition(newPosition);
+    }
+    else {
+        throw CLIException("Item with id " + std::to_string(id) + " not found");
+    }
+}
+
+void Slide::changeItemSize(size_t id, std::pair<double, double> newSize)
+{
+    auto it = getItemById(id);
+    if (it != _items.end()) {
+        (*it)->setWidth(newSize.first);
+        (*it)->setHeight(newSize.second);
+    }
+    else {
+        throw CLIException("Item with id " + std::to_string(id) + " not found");
     }
 }
 

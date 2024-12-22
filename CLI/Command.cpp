@@ -113,31 +113,23 @@ void PrevSlideCommand::execute(std::shared_ptr<Editor> &editor)
 
 void AddTextCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    std::pair<double, double> position = posOrSizeVerify("pos");
-    std::pair<double, double> size = posOrSizeVerify("size");
     std::string content = textValidate();
-    editor->addItem(ItemTypeEnum::Rectangle, position, size, content);
+    editor->addItem(ItemTypeEnum::Rectangle, posOrSizeVerify("pos"), posOrSizeVerify("size"), content);
 }
 
 void AddRectangleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    std::pair<double, double> position = posOrSizeVerify("pos");
-    std::pair<double, double> size = posOrSizeVerify("size");
-    editor->addItem(ItemTypeEnum::Rectangle, position, size);
+    editor->addItem(ItemTypeEnum::Rectangle, posOrSizeVerify("pos"), posOrSizeVerify("size"));
 }
 
 void AddCircleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    std::pair<double, double> position = posOrSizeVerify("pos");
-    std::pair<double, double> size = posOrSizeVerify("size");
-    editor->addItem(ItemTypeEnum::Circle, position, size);
+    editor->addItem(ItemTypeEnum::Circle, posOrSizeVerify("pos"), posOrSizeVerify("size"));
 }
 
 void AddTriangleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    std::pair<double, double> position = posOrSizeVerify("pos");
-    std::pair<double, double> size = posOrSizeVerify("size");
-    editor->addItem(ItemTypeEnum::Triangle, position, size);
+    editor->addItem(ItemTypeEnum::Triangle, posOrSizeVerify("pos"), posOrSizeVerify("size"));
 }
 
 void RemoveItemCommand::execute(std::shared_ptr<Editor> &editor)
@@ -152,6 +144,7 @@ void RemoveItemCommand::execute(std::shared_ptr<Editor> &editor)
 
 void MoveItemCommand::execute(std::shared_ptr<Editor> &editor)
 {
+    editor->moveItem(idVerify(), posOrSizeVerify("pos"));
 }
 
 void RenameItemCommand::execute(std::shared_ptr<Editor> &editor)
@@ -165,5 +158,5 @@ void ItemListCommand::execute(std::shared_ptr<Editor> &editor)
 
 void ChangeSizeCommand::execute(std::shared_ptr<Editor> &editor)
 {
-
+    editor->changeSize(idVerify(), posOrSizeVerify("size"));
 }
