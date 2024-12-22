@@ -28,6 +28,7 @@ void Editor::addSlide(int slideId)
         }
     }
 
+    _presentation->setCurrentSlideIndex(slides.size() - 1);
 }
 
 void Editor::removeSlide(int slideId)
@@ -40,12 +41,14 @@ void Editor::removeSlide(int slideId)
     }
     else {
         if (slideIndex < slides.size() && slideIndex >= 0 && slides.size() > 0) {
-            slides.erase(slides.begin() + slideIndex); 
+            slides.erase(slides.begin() + slideIndex);
         }
         else {
             throw CLIException("Id is out of range");
         }
     }
+    _presentation->prevSlide();
+
     
 }
 
@@ -63,18 +66,19 @@ void Editor::moveSlide(size_t slideId, size_t newId)
 
 }
 
-// std::vector<Item> Editor::itemsList()
-// {
-//     return std::vector<Item>();
-// }
-
 void Editor::printSlides() {
-    size_t slideIndex = 1;
+    size_t slideIndex = 0;
     
+    size_t currentSlideIndex = _presentation->getCurrentSlideIndex();
     const auto& slides = _presentation->getSlides();
+    if (slides.empty()) {
+        throw CLIException("No slides found");
+    }
+
     for (const auto& slidePtr : slides) {
         if (slidePtr) {
-            std::cout << "Slide " << slideIndex 
+            if (currentSlideIndex == slideIndex) std::cout << ">";
+            std::cout << " Slide " << slideIndex + 1 
                         << ": Items count = " << slidePtr->getAllItems().size()
                         << std::endl;
         }
@@ -85,6 +89,9 @@ void Editor::printSlides() {
 void Editor::printItems()
 {
     const auto &slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
+    if (slide == nullptr) {
+        throw CLIException("Slide is empty");
+    }
 
     for (const auto& item : slide->getAllItems()) {
         auto pos = item->getPosition();
@@ -102,11 +109,17 @@ void Editor::addItem(ItemTypeEnum type, std::pair<double, double> position,
                 std::pair<double, double> size, const std::string& content) {
 
     auto& slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
+    if (slide == nullptr) {
+        throw CLIException("You need to create slide first");
+    }
     slide->addItem(type, position, size.first, size.second, content);
 }
 
 void Editor::removeItem(int id)
 {
     auto& slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
+    if(slide == nullptr) {
+        throw CLIException("No slide found");
+    }
     slide->removeItem(id);
 }

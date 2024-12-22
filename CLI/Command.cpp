@@ -103,11 +103,12 @@ void MoveSlideCommand::execute(std::shared_ptr<Editor> &editor)
 
 void NextSlideCommand::execute(std::shared_ptr<Editor> &editor)
 {
-
+    editor->openNextSlide();
 }
 
 void PrevSlideCommand::execute(std::shared_ptr<Editor> &editor)
 {
+    editor->openPrevSlide();
 }
 
 void AddTextCommand::execute(std::shared_ptr<Editor> &editor)

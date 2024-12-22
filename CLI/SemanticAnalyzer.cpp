@@ -24,7 +24,7 @@ void SemanticAnalyser::initializeCmdMap()
         { "addcircle", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddCircleCommand>(std::move(args)); }},
         { "addtriangle", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddTriangleCommand>(std::move(args)); }},
         { "addtext", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddTextCommand>(std::move(args)); }},
-        { "removeshape", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RemoveItemCommand>(std::move(args)); }},
+        { "removeitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RemoveItemCommand>(std::move(args)); }},
         { "moveitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<MoveItemCommand>(std::move(args)); }},
         { "changesize", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ChangeSizeCommand>(std::move(args)); }},
         { "renameitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RenameItemCommand>(std::move(args)); }},

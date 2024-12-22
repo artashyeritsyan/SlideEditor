@@ -25,7 +25,7 @@ std::vector<std::shared_ptr<Slide>>& Presentation::getSlides() {
 
 void Presentation::nextSlide()
 {
-    if (_currentSlideIndex < _slides.size() - 2) {
+    if (_currentSlideIndex < _slides.size() - 1) {
         ++_currentSlideIndex;
     }
 }
@@ -40,4 +40,12 @@ void Presentation::prevSlide()
 size_t Presentation::getCurrentSlideIndex()
 {
     return _currentSlideIndex;
+}
+
+void Presentation::setCurrentSlideIndex(size_t index)
+{
+    if (index < _slides.size() && index >= 0) {
+        _currentSlideIndex = index;
+    }
+    _currentSlideIndex = index;
 }

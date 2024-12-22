@@ -61,7 +61,7 @@ public:
     */
 
 private:
-    size_t currSlideIndex = 0;
+    // size_t _currSlideIndex = 0;
     std::shared_ptr<Presentation> _presentation;
 };
 
