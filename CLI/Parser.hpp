@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "SyntaxAnalyzer.hpp"
 #include "SemanticAnalyzer.hpp"
+#include "SyntaxAnalyzer.hpp"
 
 class Parser {
 public:

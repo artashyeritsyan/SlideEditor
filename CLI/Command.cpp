@@ -154,3 +154,23 @@ void ChangeSizeCommand::execute(std::shared_ptr<Editor> &editor)
 {
     editor->changeItemSize(idVerify(), posOrSizeVerify("size"));
 }
+
+void BringForwardCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    editor->bringItemForward(idVerify());
+}
+
+void SendBackwardCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    editor->sendItemBackward(idVerify());
+}
+
+void BringToFrontCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    editor->bringItemToFront(idVerify());
+}
+
+void SendToBackCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    editor->sendItemToBack(idVerify());
+}

@@ -18,28 +18,26 @@ public:
     void addItem(std::shared_ptr<Item> item);
 
     void removeItem(int id);
-    void renameItem(size_t id, const std::string& newName);
-    void renameItem(const std::string& name, const std::string& newName);
-    void moveItem(size_t id, std::pair<double, double> newPosition);
-    void changeItemSize(size_t id, std::pair<double, double> newSize);
-    void setText(size_t id, const std::string& text);
+    void renameItem(int id, const std::string& newName);
+    void moveItem(int id, std::pair<double, double> newPosition);
+    void changeItemSize(int id, std::pair<double, double> newSize);
     
     std::vector<std::shared_ptr<Item>>& getItemList();
 
-    void bringItemForward(size_t id);
-    void sendItemBackward(size_t id);
-    void bringItemToFront(size_t id);
-    void sendItemToBack(size_t id);
+    void bringItemForward(int id);
+    void sendItemBackward(int id);
+    void bringItemToFront(int id);
+    void sendItemToBack(int id);
 
 private:
     bool nameRepeatingCheck(std::string name); 
-    size_t findMaxOrder();
+    int findMaxOrder();
     void orderByLayer();
-    std::vector<std::shared_ptr<Item>>::iterator getItemById(size_t id);
+    std::vector<std::shared_ptr<Item>>::iterator getItemById(int id);
     std::vector<std::shared_ptr<Item>>::iterator getItemByName(const std::string &name);
 
 
-    size_t nextId = 1;
+    int nextId = 1;
     std::vector<std::shared_ptr<Item>> _items;
 };
 

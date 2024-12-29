@@ -27,7 +27,7 @@ public:
 protected:
     int idVerify();
     std::pair<int, int> idPairVerify();
-    std::pair<double, double> posOrSizeVerify(const std::string& flag) ;
+    std::pair<double, double> posOrSizeVerify(const std::string& flag);
     std::string textVerify();
 
 protected:
@@ -117,5 +117,29 @@ public:
     ItemListCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
     void execute(std::shared_ptr<Editor>& editor) override;
 };
+
+class BringForwardCommand : public Command {
+public:
+    BringForwardCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};
+
+class SendBackwardCommand : public Command {
+public:
+    SendBackwardCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};
+
+class BringToFrontCommand : public Command {
+public:
+    BringToFrontCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};
+
+class SendToBackCommand : public Command {
+public:
+    SendToBackCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};  
 
 #endif // COMMAND_HPP

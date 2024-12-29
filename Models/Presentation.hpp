@@ -11,11 +11,11 @@ public:
         : _name(name), _slides(slides) {}
 
     int getSlidesSize();
-    const std::shared_ptr<Slide>& getSlideByIndex(size_t index);
+    const std::shared_ptr<Slide>& getSlideByIndex(int index);
     std::vector<std::shared_ptr<Slide>>& getSlides();
     
-    size_t getCurrentSlideIndex();
-    void setCurrentSlideIndex(size_t index);
+    int getCurrentSlideIndex();
+    void setCurrentSlideIndex(int index);
 
     std::string getName() const;
     void setName(const std::string& value);
@@ -27,7 +27,7 @@ public:
 private:
     std::string _name;
     std::vector<std::shared_ptr<Slide>> _slides;
-    size_t _currentSlideIndex = 0;
+    int _currentSlideIndex = 0;
 };
 
 

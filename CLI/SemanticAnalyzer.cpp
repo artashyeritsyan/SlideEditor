@@ -9,7 +9,6 @@ SemanticAnalyser::SemanticAnalyser()
 
 void SemanticAnalyser::initializeCmdMap()
 {
-// Use pattern Prototype to create the prototypes of each Command Class with their own default values and then just copy it and change values if needed
     *_commandMap = {
         { "addslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<AddSlideCommand>(std::move(args)); }},
         { "removeslide", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RemoveSlideCommand>(std::move(args)); }},
@@ -44,19 +43,3 @@ std::unique_ptr<Command> SemanticAnalyser::createCommand(const std::shared_ptr<S
 
     return std::move((*_commandMap)[commandInfo->name](std::make_unique<ArgumentsMap>(commandInfo->arguments)));
 }
-
-
-// for (const auto& arg : commandInfo->arguments) {
-//     if (arg.first == "pos") {
-//         command.set_X(arg.second[0]);
-//         if (arg.second.size() == 2) {
-//             command.set_Y(arg.second[0]);
-//         }
-//     }
-//     if (arg.first == "size") {
-//         command.setWidth(arg.second[0]);
-//         if (arg.second.size() == 2) {
-//             command.setHeigth(arg.second[0]);
-//         }
-//     }
-// }

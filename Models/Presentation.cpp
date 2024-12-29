@@ -9,7 +9,7 @@ std::string Presentation::getName() const
     return _name;
 }
 
-const std::shared_ptr<Slide>& Presentation::getSlideByIndex(size_t index) {
+const std::shared_ptr<Slide>& Presentation::getSlideByIndex(int index) {
     return _slides[index];
 }
 
@@ -31,12 +31,12 @@ void Presentation::prevSlide()
     }
 }
 
-size_t Presentation::getCurrentSlideIndex()
+int Presentation::getCurrentSlideIndex()
 {
     return _currentSlideIndex;
 }
 
-void Presentation::setCurrentSlideIndex(size_t index)
+void Presentation::setCurrentSlideIndex(int index)
 {
     if (index < _slides.size() && index >= 0) {
         _currentSlideIndex = index;

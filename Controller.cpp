@@ -11,7 +11,6 @@ void Controller::startProgram()
 {
     std::string input;
 
-    
     while (true) {
         try {
             std::cout << "Input command`" << std::endl;
@@ -19,7 +18,6 @@ void Controller::startProgram()
 
             std::stringstream sInput(input);
 
-            // Temporary solution
             if(input == "exit" || input == "q") {
                 break;
             }
@@ -31,8 +29,3 @@ void Controller::startProgram()
         }
     }
 }
-
-// add slide -id 7
-
-//  string name = ststream.get()
-    // int a = ststream.get(7);

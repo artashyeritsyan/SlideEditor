@@ -1,6 +1,6 @@
 #include "Item.hpp"
 
-Item::Item(ItemTypeEnum type, int layerOrder, size_t id, std::pair<int, int> position = {0, 0}, int _width = 10, int _height = 10)
+Item::Item(ItemTypeEnum type, int layerOrder, int id, std::pair<int, int> position = {0, 0}, int _width = 10, int _height = 10)
     : _type(type), _layerOrder(layerOrder), _position(position), id(id), _width(_width), _height(_height) {
     generateName();
 }
@@ -10,11 +10,11 @@ Item::Item(ItemTypeEnum type, int layerOrder, size_t id, std::pair<int, int> pos
 //     generateName();
 // }
 
-Item::Item(size_t id) : id(id) {
+Item::Item(int id) : id(id) {
     generateName();
 }
 
-size_t Item::getId() const {
+int Item::getId() const {
     return id;
 }
 
@@ -38,7 +38,7 @@ double Item::getY() const {
     return _position.second;
 }
 
-size_t Item::getLayer() const {
+int Item::getLayer() const {
     return _layerOrder;
 }
 
@@ -78,7 +78,7 @@ void Item::setPosition(int x, int y) {
     _position = {x, y};
 }
 
-void Item::setLayer(size_t newLayerOrder) {
+void Item::setLayer(int newLayerOrder) {
     _layerOrder = newLayerOrder;
 }
 

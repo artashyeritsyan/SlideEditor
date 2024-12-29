@@ -1,8 +1,8 @@
 #ifndef EDITOR_HPP
 #define EDITOR_HPP
 
-#include <memory>
 #include <iostream>
+#include <memory>
 
 #include "Models/Presentation.hpp"
 
@@ -16,15 +16,19 @@ public:
     void removeSlide(int slideId);
     void openNextSlide();
     void openPrevSlide();
-    void moveSlide(size_t slideId, size_t newId);
-    void openSlideById(size_t slideId);
+    void moveSlide(int slideId, int newId);
+    void openSlideById(int slideId);
 
     void addItem(ItemTypeEnum type, std::pair<double, double> position, std::pair<double, double> size, const std::string& content);
     void removeItem(int id);
-    void moveItem(size_t id, std::pair<int, int> newPosition);
-    void changeItemSize(size_t slideId, std::pair<int, int> newSize);
+    void moveItem(int id, std::pair<int, int> newPosition);
+    void changeItemSize(int slideId, std::pair<int, int> newSize);
 
-    // Print on screen
+    void bringItemForward(int id);
+    void sendItemBackward(int id);
+    void bringItemToFront(int id);
+    void sendItemToBack(int id);
+
     void printSlides();
     void printItems();
 
@@ -53,7 +57,8 @@ public:
     */
 
 private:
-    // size_t _currSlideIndex = 0;
+    std::shared_ptr<Slide> getCurrentSlide();
+
     std::shared_ptr<Presentation> _presentation;
 };
 
