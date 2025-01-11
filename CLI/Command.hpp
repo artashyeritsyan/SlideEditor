@@ -25,10 +25,12 @@ public:
     virtual void execute(std::shared_ptr<Editor>& editor) = 0;
 
 protected:
+    /// TODO: Make this functions static and move them to .cpp file
     int idVerify();
     std::pair<int, int> idPairVerify();
     std::pair<double, double> posOrSizeVerify(const std::string& flag);
     std::string textVerify();
+    std::string pathVerify();
 
 protected:
     std::unique_ptr<ArgumentsMap> _arguments;
@@ -140,6 +142,20 @@ class SendToBackCommand : public Command {
 public:
     SendToBackCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
     void execute(std::shared_ptr<Editor>& editor) override;
-};  
+};
+
+class SaveCommand : public Command {
+public:
+    SaveCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};
+
+class LoadCommand : public Command {
+public:
+    LoadCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};
+
+
 
 #endif // COMMAND_HPP

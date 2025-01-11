@@ -1,6 +1,7 @@
 #ifndef ITEM_HPP
 #define ITEM_HPP
 
+#include <fstream>
 #include <string>
 #include <memory>
 
@@ -10,6 +11,7 @@
 
 class Item {
 public:
+    Item();
     Item (ItemTypeEnum type, int layerOrder, int id, std::pair<int, int> position, int _width, int _height);
     // Item(ItemTypeEnum type, int layerOrder, int x, int y, int _width, int _height, int id);
     Item(int id);
@@ -36,16 +38,19 @@ public:
     void setTextContent(const std::string& content);
     void setText(std::shared_ptr<Text> text);
 
+    void serialize(std::ofstream& file) const;
+    static std::shared_ptr<Item> deserialize(std::ifstream& file);
+
 private:
     void generateName();
 
     int id;
     std::string _name;
     ItemTypeEnum _type = ItemTypeEnum::Rectangle;
-    int _layerOrder;
     std::pair<double, double> _position;
     int _width;
     int _height;
+    int _layerOrder;
 
     std::shared_ptr<Text> _text = nullptr;
 

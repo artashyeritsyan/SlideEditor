@@ -111,6 +111,19 @@ void Editor::printItems()
     }
 }
 
+void Editor::saveFile(const std::string &path)
+{
+    _presentation->serialize(path);
+}
+
+void Editor::loadFile(const std::string &path)
+{
+    auto temp_pres = Presentation::deserialize(path);
+    if (temp_pres) {
+        _presentation = std::move(temp_pres);
+    }
+}
+
 void Editor::addItem(ItemTypeEnum type, std::pair<double, double> position,
                 std::pair<double, double> size, const std::string& content) {
 

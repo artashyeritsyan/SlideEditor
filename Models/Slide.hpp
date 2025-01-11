@@ -23,11 +23,16 @@ public:
     void changeItemSize(int id, std::pair<double, double> newSize);
     
     std::vector<std::shared_ptr<Item>>& getItemList();
+    int getItemsCount();
 
     void bringItemForward(int id);
     void sendItemBackward(int id);
     void bringItemToFront(int id);
     void sendItemToBack(int id);
+
+
+    void serialize(std::ofstream& file) const;
+    static std::shared_ptr<Slide> deserialize(std::ifstream& file);
 
 private:
     bool nameRepeatingCheck(std::string name); 

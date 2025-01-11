@@ -42,7 +42,15 @@ void SyntaxAnalyzer::createCheckingMap()
         {"bringforward", idNameValidationCommand()},
         {"sendbackward", idNameValidationCommand()},
         {"bringtofront", idNameValidationCommand()},
-        {"sendtoback", idNameValidationCommand()}
+        {"sendtoback", idNameValidationCommand()},
+        {"save", {
+            {"f", [this](const std::string& value) { return this->nameValidation(value); }},
+            {"none", nullptr }
+        }},
+        {"load", {
+            {"f", [this](const std::string& value) { return this->nameValidation(value); }},
+            {"none", nullptr }
+        }}
     };
 }
 

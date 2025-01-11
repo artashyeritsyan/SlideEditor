@@ -32,6 +32,9 @@ public:
     void printSlides();
     void printItems();
 
+    void saveFile(const std::string& path);
+    void loadFile(const std::string& path);
+
     // Will be added in feature
     /*
     void removeItemByName(std::string name);

@@ -23,10 +23,12 @@ void SemanticAnalyser::initializeCmdMap()
         { "moveitem", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<MoveItemCommand>(std::move(args)); }},
         { "changesize", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ChangeSizeCommand>(std::move(args)); }},
         { "itemlist", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
-        { "bringforward", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
-        { "sendbackward", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
-        { "bringtofront", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
-        { "sendtoback", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<ItemListCommand>(std::move(args)); }},
+        { "bringforward", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<BringForwardCommand>(std::move(args)); }},
+        { "sendbackward", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<SendBackwardCommand>(std::move(args)); }},
+        { "bringtofront", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<BringToFrontCommand>(std::move(args)); }},
+        { "sendtoback", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<SendToBackCommand>(std::move(args)); }},
+        { "save", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<SaveCommand>(std::move(args)); }},
+        { "load", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<LoadCommand>(std::move(args)); }}
     };
 }
 

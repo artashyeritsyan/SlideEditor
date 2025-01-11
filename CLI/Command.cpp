@@ -61,6 +61,7 @@ std::pair<double, double> Command::posOrSizeVerify(const std::string& flag)
     return result;
 }
 
+/// TODO: pathVerify() and textVerify() are very similar. Consider refactoring them into one function.
 std::string Command::textVerify()
 {
     std::string text = "";
@@ -76,6 +77,25 @@ std::string Command::textVerify()
         }
     }
     return text;
+}
+
+std::string Command::pathVerify()
+{
+    std::string path = "";
+
+    // "f" is for file path
+    auto it = _arguments->find("f");
+
+    if (it != _arguments->end()) {
+
+        if (it->second.size() > 1) {
+            throw CLIException("Too many arguments for -f option");
+        }
+        else {            
+            path = std::get<std::string>(it->second[0]);
+        }
+    }
+    return path;
 }
 
 void AddSlideCommand::execute(std::shared_ptr<Editor>& editor)
@@ -173,4 +193,16 @@ void BringToFrontCommand::execute(std::shared_ptr<Editor> &editor)
 void SendToBackCommand::execute(std::shared_ptr<Editor> &editor)
 {
     editor->sendItemToBack(idVerify());
+}
+
+void SaveCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    std::string path = pathVerify();
+    editor->saveFile(path);
+}
+
+void LoadCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    std::string path = pathVerify();
+    editor->loadFile(path);
 }

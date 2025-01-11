@@ -92,6 +92,11 @@ std::vector<std::shared_ptr<Item>> &Slide::getItemList()
     return _items;
 }
 
+int Slide::getItemsCount()
+{
+    _items.size();
+}
+
 void Slide::bringItemForward(int id)
 {
     auto it = std::find_if(_items.begin(), _items.end(), [id](const std::shared_ptr<Item>& item) {
@@ -143,4 +148,31 @@ std::vector<std::shared_ptr<Item>>::iterator Slide::getItemByName(const std::str
     return std::find_if(_items.begin(), _items.end(), [name](const std::shared_ptr<Item>& item) {
         return item->getName() == name;
     });
+}
+
+
+void Slide::serialize(std::ofstream& file) const {
+    size_t itemCount = _items.size();
+    file.write(reinterpret_cast<const char*>(&itemCount), sizeof(itemCount));
+    file.write(reinterpret_cast<const char*>(&nextId), sizeof(nextId));
+
+    for (const auto& item : _items) {
+        item->serialize(file);
+    }
+}
+
+std::shared_ptr<Slide> Slide::deserialize(std::ifstream& file) {
+    auto slide = std::make_shared<Slide>();
+
+    size_t itemCount;
+    file.read(reinterpret_cast<char*>(&itemCount), sizeof(itemCount));
+    file.read(reinterpret_cast<char*>(&slide->nextId), sizeof(slide->nextId));
+
+
+    for (size_t i = 0; i < itemCount; ++i) {
+        auto item = Item::deserialize(file);
+        slide->addItem(item);
+    }
+
+    return slide;
 }
