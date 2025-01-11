@@ -35,14 +35,14 @@ void Slide::removeItem(int id) {
 }
 
 
-void Slide::renameItem(size_t id, const std::string &newName) {
+void Slide::renameItem(int id, const std::string &newName) {
     auto it = getItemById(id);
     if (it != _items.end()) {
         (*it)->setName(newName);
     }
 }
 
-void Slide::moveItem(size_t id, std::pair<double, double> newPosition)
+void Slide::moveItem(int id, std::pair<double, double> newPosition)
 {
     auto it = getItemById(id);
     if (it != _items.end()) {
@@ -53,7 +53,7 @@ void Slide::moveItem(size_t id, std::pair<double, double> newPosition)
     }
 }
 
-void Slide::changeItemSize(size_t id, std::pair<double, double> newSize)
+void Slide::changeItemSize(int id, std::pair<double, double> newSize)
 {
     auto it = getItemById(id);
     if (it != _items.end()) {
@@ -71,8 +71,8 @@ bool Slide::nameRepeatingCheck(const std::string  name) {
     }) != _items.end();
 }
 
-size_t Slide::findMaxOrder() {
-    size_t maxOrder = 0;
+int Slide::findMaxOrder() {
+    int maxOrder = 0;
     for (const auto& item : _items) {
         if (item->getLayer() > maxOrder) {
             maxOrder = item->getLayer();
@@ -92,7 +92,12 @@ std::vector<std::shared_ptr<Item>> &Slide::getItemList()
     return _items;
 }
 
-void Slide::bringItemForward(size_t id)
+int Slide::getItemsCount()
+{
+    _items.size();
+}
+
+void Slide::bringItemForward(int id)
 {
     auto it = std::find_if(_items.begin(), _items.end(), [id](const std::shared_ptr<Item>& item) {
         return item->getId() == id;
@@ -106,7 +111,7 @@ void Slide::bringItemForward(size_t id)
     }
 }
 
-void Slide::sendItemBackward(size_t id) {
+void Slide::sendItemBackward(int id) {
     auto it = getItemById(id);
     if (it != _items.end()) {
         if ((*it)->getLayer() > 0)
@@ -117,7 +122,7 @@ void Slide::sendItemBackward(size_t id) {
     }
 }
 
-void Slide::bringItemToFront(size_t id) {
+void Slide::bringItemToFront(int id) {
     auto it = getItemById(id);
     if (it != _items.end()) {
         (*it)->setLayer(findMaxOrder() + 1);
@@ -125,7 +130,7 @@ void Slide::bringItemToFront(size_t id) {
     }
 }
 
-void Slide::sendItemToBack(size_t id) {
+void Slide::sendItemToBack(int id) {
     auto it = getItemById(id);
     if (it != _items.end()) {
         (*it)->setLayer(0);
@@ -133,7 +138,7 @@ void Slide::sendItemToBack(size_t id) {
     }
 }
 
-std::vector<std::shared_ptr<Item>>::iterator Slide::getItemById(size_t id) {
+std::vector<std::shared_ptr<Item>>::iterator Slide::getItemById(int id) {
     return std::find_if(_items.begin(), _items.end(), [id](const std::shared_ptr<Item>& item) {
         return item->getId() == id;
     });
@@ -143,4 +148,31 @@ std::vector<std::shared_ptr<Item>>::iterator Slide::getItemByName(const std::str
     return std::find_if(_items.begin(), _items.end(), [name](const std::shared_ptr<Item>& item) {
         return item->getName() == name;
     });
+}
+
+
+void Slide::serialize(std::ofstream& file) const {
+    size_t itemCount = _items.size();
+    file.write(reinterpret_cast<const char*>(&itemCount), sizeof(itemCount));
+    file.write(reinterpret_cast<const char*>(&nextId), sizeof(nextId));
+
+    for (const auto& item : _items) {
+        item->serialize(file);
+    }
+}
+
+std::shared_ptr<Slide> Slide::deserialize(std::ifstream& file) {
+    auto slide = std::make_shared<Slide>();
+
+    size_t itemCount;
+    file.read(reinterpret_cast<char*>(&itemCount), sizeof(itemCount));
+    file.read(reinterpret_cast<char*>(&slide->nextId), sizeof(slide->nextId));
+
+
+    for (size_t i = 0; i < itemCount; ++i) {
+        auto item = Item::deserialize(file);
+        slide->addItem(item);
+    }
+
+    return slide;
 }

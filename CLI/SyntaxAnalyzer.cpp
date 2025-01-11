@@ -42,7 +42,15 @@ void SyntaxAnalyzer::createCheckingMap()
         {"bringforward", idNameValidationCommand()},
         {"sendbackward", idNameValidationCommand()},
         {"bringtofront", idNameValidationCommand()},
-        {"sendtoback", idNameValidationCommand()}
+        {"sendtoback", idNameValidationCommand()},
+        {"save", {
+            {"f", [this](const std::string& value) { return this->nameValidation(value); }},
+            {"none", nullptr }
+        }},
+        {"load", {
+            {"f", [this](const std::string& value) { return this->nameValidation(value); }},
+            {"none", nullptr }
+        }}
     };
 }
 
@@ -71,22 +79,22 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::startSyntaxAnalize(std::stringstre
     while(token->type != ETokenType::END) {
 
         if (token->type == ETokenType::WORD && (
-        tokens.size() == 0 || 
-        tokens[tokens.size() - 1]->type == ETokenType::WORD))
+            tokens.size() == 0 || 
+            tokens[tokens.size() - 1]->type == ETokenType::WORD))
         {
             tokens.push_back(token);
         }
 
         else if (token->type == ETokenType::FLAG &&
-        tokens.size() != 0 &&
-        tokens[tokens.size() - 1]->type != ETokenType::FLAG)  
+            tokens.size() != 0 &&
+            tokens[tokens.size() - 1]->type != ETokenType::FLAG)  
         {
             tokens.push_back(token);
         }
 
         else if (token->type == ETokenType::VALUE && (
-        tokens[tokens.size() - 1]->type == ETokenType::FLAG ||
-        tokens[tokens.size() - 1]->type == ETokenType::VALUE ))
+            tokens[tokens.size() - 1]->type == ETokenType::FLAG ||
+            tokens[tokens.size() - 1]->type == ETokenType::VALUE ))
         {
             tokens.push_back(token);
         }
@@ -107,7 +115,7 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
 
     std::shared_ptr<SCommandInfo> cmdInfo = std::make_unique<SCommandInfo>();
 
-    size_t i = 0;
+    int i = 0;
     while (i < tokens.size() && tokens[i]->type == ETokenType::WORD) {
         cmdInfo->name += tokens[i++]->value;
     }
@@ -115,8 +123,7 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
     if (_commandRules.find(cmdInfo->name) == _commandRules.end()) {
         throw CLIException("Invalid command");
     }
-    // if the command has no arguments just return only the name of command
-    
+
     if (i == tokens.size() ) {
         if (_commandRules[cmdInfo->name].find("none") != _commandRules[cmdInfo->name].end()) {
             return cmdInfo;
@@ -125,10 +132,6 @@ std::shared_ptr<SCommandInfo> SyntaxAnalyzer::checkCommandCorrectness(std::vecto
             throw CLIException("Expected arguments");
         }
     }
-
-    // if(_commandRules[cmdInfo->name].size() == 0) {
-    //     return cmdInfo;
-    // }
 
     std::string flag;
     std::string value;

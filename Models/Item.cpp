@@ -1,6 +1,10 @@
 #include "Item.hpp"
 
-Item::Item(ItemTypeEnum type, int layerOrder, size_t id, std::pair<int, int> position = {0, 0}, int _width = 10, int _height = 10)
+Item::Item() {
+    generateName();
+}
+
+Item::Item(ItemTypeEnum type, int layerOrder, int id, std::pair<int, int> position = {0, 0}, int _width = 10, int _height = 10)
     : _type(type), _layerOrder(layerOrder), _position(position), id(id), _width(_width), _height(_height) {
     generateName();
 }
@@ -10,11 +14,11 @@ Item::Item(ItemTypeEnum type, int layerOrder, size_t id, std::pair<int, int> pos
 //     generateName();
 // }
 
-Item::Item(size_t id) : id(id) {
+Item::Item(int id) : id(id) {
     generateName();
 }
 
-size_t Item::getId() const {
+int Item::getId() const {
     return id;
 }
 
@@ -38,7 +42,7 @@ double Item::getY() const {
     return _position.second;
 }
 
-size_t Item::getLayer() const {
+int Item::getLayer() const {
     return _layerOrder;
 }
 
@@ -55,6 +59,7 @@ std::string Item::getTextContent() const
     if (_text != nullptr) {
         return _text->getContent();
     }
+    return "";
 }
 
 bool Item::hasText() const
@@ -78,7 +83,7 @@ void Item::setPosition(int x, int y) {
     _position = {x, y};
 }
 
-void Item::setLayer(size_t newLayerOrder) {
+void Item::setLayer(int newLayerOrder) {
     _layerOrder = newLayerOrder;
 }
 
@@ -121,6 +126,58 @@ void Item::generateName() {
             _name = "Unknown_" + std::to_string(id);
             break;
     }
+}
+
+
+void Item::serialize(std::ofstream& file) const {
+    size_t nameLength = _name.size();
+    file.write(reinterpret_cast<const char*>(&nameLength), sizeof(nameLength));
+    file.write(_name.c_str(), nameLength);
+    file.write(reinterpret_cast<const char*>(&id), sizeof(id));
+    file.write(reinterpret_cast<const char*>(&_type), sizeof(_type));
+    file.write(reinterpret_cast<const char*>(&_position), sizeof(_position));
+    file.write(reinterpret_cast<const char*>(&_width), sizeof(_width));
+    file.write(reinterpret_cast<const char*>(&_height), sizeof(_height));
+    file.write(reinterpret_cast<const char*>(&_layerOrder), sizeof(_layerOrder));
+
+    std::string textContent = getTextContent();
+    if(textContent.empty()) {
+        size_t textLength = 0;
+        file.write(reinterpret_cast<const char*>(&textLength), sizeof(textLength));
+        return;
+    }
+
+    size_t textLength = textContent.size();
+    file.write(reinterpret_cast<const char*>(&textLength), sizeof(textLength));
+    file.write(textContent.c_str(), textLength);
+
+}
+
+std::shared_ptr<Item> Item::deserialize(std::ifstream& file) {
+    auto item = std::make_shared<Item>();
+
+    size_t nameLength;
+    file.read(reinterpret_cast<char*>(&nameLength), sizeof(nameLength));
+    item->_name.resize(nameLength);
+    file.read(&item->_name[0], nameLength);
+    file.read(reinterpret_cast<char*>(&item->id), sizeof(item->id));
+    file.read(reinterpret_cast<char*>(&item->_type), sizeof(item->_type));
+    file.read(reinterpret_cast<char*>(&item->_position), sizeof(item->_position));
+    file.read(reinterpret_cast<char*>(&item->_width), sizeof(item->_width));
+    file.read(reinterpret_cast<char*>(&item->_height), sizeof(item->_height));
+    file.read(reinterpret_cast<char*>(&item->_layerOrder), sizeof(item->_layerOrder));
+    
+    size_t textLength;
+    file.read(reinterpret_cast<char*>(&textLength), sizeof(textLength));
+
+    if (textLength != 0) {
+        std::string textContent;
+        textContent.resize(textLength);
+        file.read(&textContent[0], textLength);
+        item->setTextContent(textContent);
+    }
+    
+    return item;
 }
 
 

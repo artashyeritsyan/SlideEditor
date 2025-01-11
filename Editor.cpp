@@ -52,10 +52,10 @@ void Editor::removeSlide(int slideId)
     
 }
 
-void Editor::moveSlide(size_t slideId, size_t newId)
+void Editor::moveSlide(int slideId, int newId)
 {
-    size_t firstIndex = slideId - 1;
-    size_t secondIndex = newId - 1;
+    int firstIndex = slideId - 1;
+    int secondIndex = newId - 1;
     auto& slides = _presentation->getSlides();
 
     if (firstIndex >= 0 && firstIndex < slides.size() && secondIndex >= 0 && secondIndex < slides.size()) {
@@ -67,9 +67,9 @@ void Editor::moveSlide(size_t slideId, size_t newId)
 }
 
 void Editor::printSlides() {
-    size_t slideIndex = 0;
+    int slideIndex = 0;
     
-    size_t currentSlideIndex = _presentation->getCurrentSlideIndex();
+    int currentSlideIndex = _presentation->getCurrentSlideIndex();
     const auto& slides = _presentation->getSlides();
     if (slides.empty()) {
         throw CLIException("No slides found");
@@ -111,6 +111,19 @@ void Editor::printItems()
     }
 }
 
+void Editor::saveFile(const std::string &path)
+{
+    _presentation->serialize(path);
+}
+
+void Editor::loadFile(const std::string &path)
+{
+    auto temp_pres = Presentation::deserialize(path);
+    if (temp_pres) {
+        _presentation = std::move(temp_pres);
+    }
+}
+
 void Editor::addItem(ItemTypeEnum type, std::pair<double, double> position,
                 std::pair<double, double> size, const std::string& content) {
 
@@ -124,27 +137,45 @@ void Editor::addItem(ItemTypeEnum type, std::pair<double, double> position,
 
 void Editor::removeItem(int id)
 {
-    auto& slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
-    if(slide == nullptr) {
-        throw CLIException("No slide found");
-    }
-    slide->removeItem(id);
+    
+    getCurrentSlide()->removeItem(id);
 }
 
-void Editor::moveItem(size_t id, std::pair<int, int> newPosition)
+void Editor::moveItem(int id, std::pair<int, int> newPosition)
+{
+    getCurrentSlide()->moveItem(id, newPosition);
+}
+
+void Editor::changeItemSize(int id, std::pair<int, int> newSize)
+{
+    getCurrentSlide()->changeItemSize(id, newSize);
+}
+
+void Editor::bringItemForward(int id)
+{
+    getCurrentSlide()->bringItemForward(id);
+}
+
+void Editor::sendItemBackward(int id)
+{
+    getCurrentSlide()->sendItemBackward(id);
+}
+
+void Editor::bringItemToFront(int id)
+{
+    getCurrentSlide()->bringItemToFront(id);
+}
+
+void Editor::sendItemToBack(int id)
+{
+    getCurrentSlide()->sendItemToBack(id);
+}
+
+std::shared_ptr<Slide> Editor::getCurrentSlide()
 {
     auto& slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
     if(slide == nullptr) {
         throw CLIException("No slide found");
     }
-    slide->moveItem(id, newPosition);
-}
-
-void Editor::changeItemSize(size_t id, std::pair<int, int> newSize)
-{
-    auto& slide = _presentation->getSlideByIndex(_presentation->getCurrentSlideIndex());
-    if(slide == nullptr) {
-        throw CLIException("No slide found");
-    }
-    slide->changeItemSize(id, newSize);
+    return slide;
 }
