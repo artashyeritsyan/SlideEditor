@@ -12,7 +12,7 @@ public:
     // int getItemsCount();
     
     // Print all items in slide, ordering by their LayerOrder 
-    std::vector<std::shared_ptr<Item>>& getAllItems();
+    std::vector<std::shared_ptr<Item>>& getItemList();
 
     void addItem(ItemTypeEnum type, std::pair<double, double> position, double width, double height, const std::string& text);
     void addItem(std::shared_ptr<Item> item);
@@ -22,14 +22,13 @@ public:
     void moveItem(int id, std::pair<double, double> newPosition);
     void changeItemSize(int id, std::pair<double, double> newSize);
     
-    std::vector<std::shared_ptr<Item>>& getItemList();
+    std::shared_ptr<Item> getItemById(int id);
     int getItemsCount();
 
     void bringItemForward(int id);
     void sendItemBackward(int id);
     void bringItemToFront(int id);
     void sendItemToBack(int id);
-
 
     void serialize(std::ofstream& file) const;
     static std::shared_ptr<Slide> deserialize(std::ifstream& file);
@@ -38,7 +37,7 @@ private:
     bool nameRepeatingCheck(std::string name); 
     int findMaxOrder();
     void orderByLayer();
-    std::vector<std::shared_ptr<Item>>::iterator getItemById(int id);
+    std::vector<std::shared_ptr<Item>>::iterator getItemIterById(int id);
     std::vector<std::shared_ptr<Item>>::iterator getItemByName(const std::string &name);
 
 

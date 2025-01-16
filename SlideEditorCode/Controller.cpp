@@ -26,6 +26,8 @@ void Controller::startProgram()
             command->execute(_editor);
         } catch (const CLIException& ex) {
             std::cerr << "CLI Error: " << ex.what() << std::endl;
+        } catch (const std::exception& ex) {
+            std::cerr << "Error: " << ex.what() << std::endl;
         }
     }
 }

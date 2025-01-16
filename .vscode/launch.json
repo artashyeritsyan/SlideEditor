@@ -4,7 +4,7 @@
             "name": "(gdb) Launch",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/slide_editor",
+            "program": "${workspaceFolder}/SlideEditorCode/slide_editor",
             "args": [],
             // "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

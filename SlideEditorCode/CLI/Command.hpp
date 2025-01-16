@@ -3,8 +3,8 @@
 
 #include <functional>
 #include <unordered_map>
-#include <vector>
 #include <variant>
+#include <vector>
 #include <string>
 
 #include "Tokenizer.hpp"
@@ -156,6 +156,16 @@ public:
     void execute(std::shared_ptr<Editor>& editor) override;
 };
 
+class UndoCommand : public Command {
+public: 
+    UndoCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};
 
+class RedoCommand : public Command {
+public: 
+    RedoCommand(std::unique_ptr<ArgumentsMap> args) : Command(std::move(args)) {}
+    void execute(std::shared_ptr<Editor>& editor) override;
+};
 
 #endif // COMMAND_HPP
