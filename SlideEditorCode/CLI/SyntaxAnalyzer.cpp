@@ -50,7 +50,10 @@ void SyntaxAnalyzer::createCheckingMap()
         {"load", {
             {"f", [this](const std::string& value) { return this->nameValidation(value); }},
             {"none", nullptr }
-        }}
+        }},
+        {"undo", {{"none", nullptr }}},
+        {"redo", {{"none", nullptr }}},
+
     };
 }
 

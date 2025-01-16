@@ -2,32 +2,33 @@
 #define EDITOR_HPP
 
 #include <iostream>
+#include <stack>
 #include <memory>
 
 #include "Models/Presentation.hpp"
+#include "Actions/IAction.hpp"
 
 class Editor {
 public:
-    explicit Editor(std::shared_ptr<Presentation> pres) : _presentation(pres) {}
-
+    explicit Editor(std::shared_ptr<Presentation> pres);
 
     // Slide 
-    void addSlide(int slideId = 0);
-    void removeSlide(int slideId);
-    void openNextSlide();
-    void openPrevSlide();
-    void moveSlide(int slideId, int newId);
-    void openSlideById(int slideId);
+    // void addSlide(int slideId = 0);
+    // void removeSlide(int slideId);
+    // void openNextSlide();
+    // void openPrevSlide();
+    // void moveSlide(int slideId, int newId);
+    // void openSlideById(int slideId);
 
-    void addItem(ItemTypeEnum type, std::pair<double, double> position, std::pair<double, double> size, const std::string& content);
-    void removeItem(int id);
-    void moveItem(int id, std::pair<int, int> newPosition);
-    void changeItemSize(int slideId, std::pair<int, int> newSize);
+    // void addItem(ItemTypeEnum type, std::pair<double, double> position, std::pair<double, double> size, const std::string& content);
+    // void removeItem(int id);
+    // void moveItem(int id, std::pair<int, int> newPosition);
+    // void changeItemSize(int id, std::pair<int, int> newSize);
 
-    void bringItemForward(int id);
-    void sendItemBackward(int id);
-    void bringItemToFront(int id);
-    void sendItemToBack(int id);
+    // void bringItemForward(int id);
+    // void sendItemBackward(int id);
+    // void bringItemToFront(int id);
+    // void sendItemToBack(int id);
 
     void printSlides();
     void printItems();
@@ -58,11 +59,20 @@ public:
     void fileHelp(); // Print commands for file
 
     */
+   
+   std::shared_ptr<Presentation> getPresentation() const;
+   void process(std::shared_ptr<IAction> action);
+   void undo();
+   void redo();
+    
 
 private:
     std::shared_ptr<Slide> getCurrentSlide();
 
     std::shared_ptr<Presentation> _presentation;
+
+    std::stack<std::shared_ptr<IAction>> undoStack;
+    std::stack<std::shared_ptr<IAction>> redoStack;
 };
 
 #endif // EDITOR_HPP

@@ -1,5 +1,15 @@
 #include "Command.hpp"
 
+#include "../Actions/AddItemAction.hpp"
+#include "../Actions/AddSlideAction.hpp"
+#include "../Actions/ChangeSizeAction.hpp"
+#include "../Actions/RemoveItemAction.hpp"
+#include "../Actions/RemoveSlideAction.hpp"
+#include "../Actions/MoveItemAction.hpp"
+#include "../Actions/MoveSlideAction.hpp"
+#include "../Actions/NextPrevSlidesAction.hpp"
+
+
 Command::Command(std::unique_ptr<ArgumentsMap> args)
     : _arguments(std::move(args)) {}
 
@@ -98,68 +108,119 @@ std::string Command::pathVerify()
     return path;
 }
 
+// Refactored
 void AddSlideCommand::execute(std::shared_ptr<Editor>& editor)
 {    
     int slideId = idVerify();
-    editor->addSlide(slideId);
+    int slideIndex = slideId != -1 ? slideId - 1 : slideId;
+
+    std::shared_ptr<Slide> slide = std::make_unique<Slide>();
+    auto addAction = std::make_shared<AddSlideAction>(slide, slideIndex);
+    editor->process(addAction);
 }
 
+// Refactored
 void RemoveSlideCommand::execute(std::shared_ptr<Editor>& editor)
 {
     int slideId = idVerify();
-    editor->removeSlide(slideId);
+    int slideIndex = slideId != -1 ? slideId - 1 : slideId;
+
+    auto removeAction = std::make_shared<RemoveSlideAction>(slideIndex);
+    editor->process(removeAction);
 }
 
 void SlideListCommand::execute(std::shared_ptr<Editor> &editor)
 {
+    /// TODO: move print part to View
     editor->printSlides();
 }
 
+// Refactored
 void MoveSlideCommand::execute(std::shared_ptr<Editor> &editor)
 {
     const auto& slideIds = idPairVerify();
-    editor->moveSlide(slideIds.first, slideIds.second);
+
+    auto action = std::make_shared<MoveSlideAction>(slideIds.first - 1, slideIds.second - 1);
+    editor->process(action);
 }
 
+// Refactored
 void NextSlideCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->openNextSlide();
+    auto action = std::make_shared<NextSlideAction>();
+    editor->process(action);
 }
 
+// Refactored
 void PrevSlideCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->openPrevSlide();
+    auto action = std::make_shared<PrevSlideAction>();
+    editor->process(action);
 }
 
+// Refactored
 void AddRectangleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->addItem(ItemTypeEnum::Rectangle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
+    editor->getPresentation()->addItem(ItemTypeEnum::Rectangle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
+    auto item = editor->getPresentation()->getCurrentSlide()->getItemList().back();
+
+    auto addAction = std::make_shared<AddItemAction>(item);
+    editor->getPresentation()->getCurrentSlide()->removeItem(item->getId());
+
+    editor->process(addAction);
 }
 
+// Refactored
 void AddCircleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->addItem(ItemTypeEnum::Circle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
+    editor->getPresentation()->addItem(ItemTypeEnum::Circle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
+    auto item = editor->getPresentation()->getCurrentSlide()->getItemList().back();
+
+    auto addAction = std::make_shared<AddItemAction>(item);
+    editor->getPresentation()->getCurrentSlide()->removeItem(item->getId());
+
+    editor->process(addAction);
 }
 
+// Refactored
 void AddTriangleCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->addItem(ItemTypeEnum::Triangle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
+    editor->getPresentation()->addItem(ItemTypeEnum::Triangle, posOrSizeVerify("pos"), posOrSizeVerify("size"), textVerify());
+    auto item = editor->getPresentation()->getCurrentSlide()->getItemList().back();
+
+    auto action = std::make_shared<AddItemAction>(item);
+    editor->getPresentation()->getCurrentSlide()->removeItem(item->getId());
+
+    editor->process(action);
 }
 
+// Refactored
 void RemoveItemCommand::execute(std::shared_ptr<Editor> &editor)
 {
     int itemId = idVerify();
     if (itemId == -1 || itemId == 0) {
         throw CLIException("Invalid id");
     }
+    const auto& item = editor->getPresentation()->getCurrentSlide()->getItemById(itemId);
 
-    editor->removeItem(itemId);
+    auto action = std::make_shared<RemoveItemAction>(item);
+    editor->process(action);
 }
 
+// Refactored
 void MoveItemCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->moveItem(idVerify(), posOrSizeVerify("pos"));
+    auto action = std::make_shared<MoveItemAction>(idVerify(), posOrSizeVerify("pos"));
+    editor->process(action);
 }
+
+// Refactored
+void ChangeSizeCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    auto action = std::make_shared<ChangeItemSizeAction>(idVerify(), posOrSizeVerify("size"));
+    editor->process(action);
+}
+
 
 void RenameItemCommand::execute(std::shared_ptr<Editor> &editor)
 {
@@ -170,29 +231,27 @@ void ItemListCommand::execute(std::shared_ptr<Editor> &editor)
     editor->printItems();
 }
 
-void ChangeSizeCommand::execute(std::shared_ptr<Editor> &editor)
-{
-    editor->changeItemSize(idVerify(), posOrSizeVerify("size"));
-}
+
+// Refactored, but without undo redo logic
 
 void BringForwardCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->bringItemForward(idVerify());
+    editor->getPresentation()->getCurrentSlide()->bringItemForward(idVerify());
 }
 
 void SendBackwardCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->sendItemBackward(idVerify());
+    editor->getPresentation()->getCurrentSlide()->sendItemBackward(idVerify());
 }
 
 void BringToFrontCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->bringItemToFront(idVerify());
+    editor->getPresentation()->getCurrentSlide()->bringItemToFront(idVerify());
 }
 
 void SendToBackCommand::execute(std::shared_ptr<Editor> &editor)
 {
-    editor->sendItemToBack(idVerify());
+    editor->getPresentation()->getCurrentSlide()->sendItemToBack(idVerify());
 }
 
 void SaveCommand::execute(std::shared_ptr<Editor> &editor)
@@ -205,4 +264,14 @@ void LoadCommand::execute(std::shared_ptr<Editor> &editor)
 {
     std::string path = pathVerify();
     editor->loadFile(path);
+}
+
+void UndoCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    editor->undo();
+}
+
+void RedoCommand::execute(std::shared_ptr<Editor> &editor)
+{
+    editor->redo();
 }

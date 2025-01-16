@@ -2,7 +2,7 @@
 
 Slide::Slide() : nextId(1) {}
 
-std::vector<std::shared_ptr<Item>> &Slide::getAllItems() {
+std::vector<std::shared_ptr<Item>> &Slide::getItemList() {
     orderByLayer();
     return _items;
 }
@@ -13,7 +13,7 @@ void Slide::addItem(ItemTypeEnum type, std::pair<double, double> position = {0, 
     auto tmpItem = std::make_shared<Item>(type, findMaxOrder() + 1, nextId++, position, width, height);
 
     if (content != "") {
-        tmpItem->setTextContent(content);  ///TODO :: take a ynamic 
+        tmpItem->setTextContent(content);  ///TODO: take a ynamic 
     }
     
     _items.push_back(tmpItem);
@@ -25,7 +25,7 @@ void Slide::addItem(std::shared_ptr<Item> item)
 }
 
 void Slide::removeItem(int id) {
-    auto it = getItemById(id);
+    auto it = getItemIterById(id);
     if (it != _items.end()) {
         _items.erase(it);
     }
@@ -36,7 +36,7 @@ void Slide::removeItem(int id) {
 
 
 void Slide::renameItem(int id, const std::string &newName) {
-    auto it = getItemById(id);
+    auto it = getItemIterById(id);
     if (it != _items.end()) {
         (*it)->setName(newName);
     }
@@ -44,7 +44,7 @@ void Slide::renameItem(int id, const std::string &newName) {
 
 void Slide::moveItem(int id, std::pair<double, double> newPosition)
 {
-    auto it = getItemById(id);
+    auto it = getItemIterById(id);
     if (it != _items.end()) {
         (*it)->setPosition(newPosition);
     }
@@ -55,7 +55,7 @@ void Slide::moveItem(int id, std::pair<double, double> newPosition)
 
 void Slide::changeItemSize(int id, std::pair<double, double> newSize)
 {
-    auto it = getItemById(id);
+    auto it = getItemIterById(id);
     if (it != _items.end()) {
         (*it)->setWidth(newSize.first);
         (*it)->setHeight(newSize.second);
@@ -87,9 +87,13 @@ void Slide::orderByLayer() {
     });
 }
 
-std::vector<std::shared_ptr<Item>> &Slide::getItemList()
+std::shared_ptr<Item> Slide::getItemById(int id)
 {
-    return _items;
+    auto it = getItemIterById(id);
+    if (it != _items.end()) {
+        return *it;
+    }
+    return nullptr;
 }
 
 int Slide::getItemsCount()
@@ -112,7 +116,7 @@ void Slide::bringItemForward(int id)
 }
 
 void Slide::sendItemBackward(int id) {
-    auto it = getItemById(id);
+    auto it = getItemIterById(id);
     if (it != _items.end()) {
         if ((*it)->getLayer() > 0)
         {
@@ -123,7 +127,7 @@ void Slide::sendItemBackward(int id) {
 }
 
 void Slide::bringItemToFront(int id) {
-    auto it = getItemById(id);
+    auto it = getItemIterById(id);
     if (it != _items.end()) {
         (*it)->setLayer(findMaxOrder() + 1);
         orderByLayer();
@@ -131,14 +135,14 @@ void Slide::bringItemToFront(int id) {
 }
 
 void Slide::sendItemToBack(int id) {
-    auto it = getItemById(id);
+    auto it = getItemIterById(id);
     if (it != _items.end()) {
         (*it)->setLayer(0);
         orderByLayer();
     }
 }
 
-std::vector<std::shared_ptr<Item>>::iterator Slide::getItemById(int id) {
+std::vector<std::shared_ptr<Item>>::iterator Slide::getItemIterById(int id) {
     return std::find_if(_items.begin(), _items.end(), [id](const std::shared_ptr<Item>& item) {
         return item->getId() == id;
     });

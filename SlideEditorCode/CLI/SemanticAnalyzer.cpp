@@ -28,7 +28,9 @@ void SemanticAnalyser::initializeCmdMap()
         { "bringtofront", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<BringToFrontCommand>(std::move(args)); }},
         { "sendtoback", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<SendToBackCommand>(std::move(args)); }},
         { "save", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<SaveCommand>(std::move(args)); }},
-        { "load", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<LoadCommand>(std::move(args)); }}
+        { "load", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<LoadCommand>(std::move(args)); }},
+        { "undo", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<UndoCommand>(std::move(args)); }},
+        { "redo", [](std::unique_ptr<ArgumentsMap> args) { return std::make_unique<RedoCommand>(std::move(args)); }}
     };
 }
 
