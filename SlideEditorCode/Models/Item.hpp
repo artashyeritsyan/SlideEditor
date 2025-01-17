@@ -38,9 +38,6 @@ public:
     void setTextContent(const std::string& content);
     void setText(std::shared_ptr<Text> text);
 
-    void serialize(std::ofstream& file) const;
-    static std::shared_ptr<Item> deserialize(std::ifstream& file);
-
 private:
     void generateName();
 

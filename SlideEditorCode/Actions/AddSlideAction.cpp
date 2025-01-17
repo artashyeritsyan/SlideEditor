@@ -9,5 +9,3 @@ std::shared_ptr<IAction> AddSlideAction::doAction(std::shared_ptr<Presentation> 
     document->addSlide(currentSlide, slideIndex);
     return std::make_shared<RemoveSlideAction>(slideIndex);
 }
-
-

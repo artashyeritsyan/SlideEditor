@@ -5,36 +5,12 @@
 #include <stack>
 #include <memory>
 
-#include "Models/Presentation.hpp"
 #include "Actions/IAction.hpp"
+#include "Application/Application.hpp"
 
 class Editor {
 public:
-    explicit Editor(std::shared_ptr<Presentation> pres);
-
-    // Slide 
-    // void addSlide(int slideId = 0);
-    // void removeSlide(int slideId);
-    // void openNextSlide();
-    // void openPrevSlide();
-    // void moveSlide(int slideId, int newId);
-    // void openSlideById(int slideId);
-
-    // void addItem(ItemTypeEnum type, std::pair<double, double> position, std::pair<double, double> size, const std::string& content);
-    // void removeItem(int id);
-    // void moveItem(int id, std::pair<int, int> newPosition);
-    // void changeItemSize(int id, std::pair<int, int> newSize);
-
-    // void bringItemForward(int id);
-    // void sendItemBackward(int id);
-    // void bringItemToFront(int id);
-    // void sendItemToBack(int id);
-
-    void printSlides();
-    void printItems();
-
-    void saveFile(const std::string& path);
-    void loadFile(const std::string& path);
+    // explicit Editor();
 
     // Will be added in feature
     /*
@@ -60,16 +36,17 @@ public:
 
     */
    
-   std::shared_ptr<Presentation> getPresentation() const;
+//    std::shared_ptr<Presentation> getPresentation() const;
    void process(std::shared_ptr<IAction> action);
    void undo();
    void redo();
     
 
 private:
-    std::shared_ptr<Slide> getCurrentSlide();
+    // void updatePresentation();
 
-    std::shared_ptr<Presentation> _presentation;
+private:
+    // std::shared_ptr<Presentation> _presentation;
 
     std::stack<std::shared_ptr<IAction>> undoStack;
     std::stack<std::shared_ptr<IAction>> redoStack;

@@ -25,9 +25,6 @@ public:
 
     void setUnderlined(bool underlined);
     bool getUnderlined() const;
-
-    // void serialize(std::ofstream& file) const;
-    // static std::shared_ptr<Text> deserialize(std::ifstream& file);
     
 private:
     std::string _content = "";

@@ -9,6 +9,7 @@
 class Slide {
 public:
     Slide();
+    Slide(int nextId);
     // int getItemsCount();
     
     // Print all items in slide, ordering by their LayerOrder 
@@ -24,14 +25,12 @@ public:
     
     std::shared_ptr<Item> getItemById(int id);
     int getItemsCount();
+    const int& getNextId() const;
 
     void bringItemForward(int id);
     void sendItemBackward(int id);
     void bringItemToFront(int id);
     void sendItemToBack(int id);
-
-    void serialize(std::ofstream& file) const;
-    static std::shared_ptr<Slide> deserialize(std::ifstream& file);
 
 private:
     bool nameRepeatingCheck(std::string name); 

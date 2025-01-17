@@ -1,8 +1,9 @@
-#include "Controller.hpp"
+#include "Application/Application.hpp"
 
 int main() {
-    Controller *program = new Controller;
-    program->startProgram();
+
+    Application& app = Application::getInstance();
+    app.run();
     
     return 0;
 }

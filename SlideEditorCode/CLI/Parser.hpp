@@ -8,7 +8,7 @@
 
 class Parser {
 public:
-    Parser (std::shared_ptr<Presentation> pr);
+    Parser ();
     std::shared_ptr<Command> parse(std::stringstream &input);
 
 private:

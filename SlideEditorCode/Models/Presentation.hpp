@@ -33,12 +33,6 @@ public:
     void moveItem(int id, std::pair<double, double> newPosition);
     void changeItemSize(int slideId, std::pair<int, int> newSize);
 
-
-
-    void serialize(const std::string& filename) const;
-    static std::shared_ptr<Presentation> deserialize(const std::string& filename);
-
-
 private:
     std::string _name;
     std::vector<std::shared_ptr<Slide>> _slides;

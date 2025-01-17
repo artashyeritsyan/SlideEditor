@@ -1,6 +1,6 @@
 #include "Parser.hpp"
 
-Parser::Parser(std::shared_ptr<Presentation> pr)
+Parser::Parser()
 {
     _syntaxAnalyzer = std::make_unique<SyntaxAnalyzer>();
     _semanticAnalyser = std::make_unique<SemanticAnalyser>();

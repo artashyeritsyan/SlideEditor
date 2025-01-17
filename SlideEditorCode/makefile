@@ -8,9 +8,13 @@ CLI_DIR = $(SRC_DIR)/CLI
 ENUMS_DIR = $(SRC_DIR)/Enums
 MODELS_DIR = $(SRC_DIR)/Models
 ACTIONS_DIR = $(SRC_DIR)/Actions
+APPLICATION_DIR = $(SRC_DIR)/Application
+VISUALIZATION_DIR = $(SRC_DIR)/Visualization
+SERIALIZATION_DIR = $(SRC_DIR)/Serialization
 
 # Source files
 SRCS = $(CLI_DIR)/Command.cpp \
+       $(CLI_DIR)/Controller.cpp \
        $(CLI_DIR)/Parser.cpp \
        $(CLI_DIR)/SemanticAnalyzer.cpp \
        $(CLI_DIR)/SyntaxAnalyzer.cpp \
@@ -27,12 +31,15 @@ SRCS = $(CLI_DIR)/Command.cpp \
        $(ACTIONS_DIR)/MoveItemAction.cpp \
        $(ACTIONS_DIR)/ChangeSizeAction.cpp \
        $(ACTIONS_DIR)/MoveSlideAction.cpp \
-       $(SRC_DIR)/Controller.cpp \
+       $(APPLICATION_DIR)/Application.cpp \
+       $(VISUALIZATION_DIR)/Visualization.cpp \
+       $(SERIALIZATION_DIR)/Serialization.cpp \
        $(SRC_DIR)/Editor.cpp \
        $(SRC_DIR)/main.cpp
 
 # Header files (included for completeness)
 HDRS = $(CLI_DIR)/Command.hpp \
+       $(CLI_DIR)/Controller.hpp \
        $(CLI_DIR)/Parser.hpp \
        $(CLI_DIR)/SemanticAnalyzer.hpp \
        $(CLI_DIR)/SyntaxAnalyzer.hpp \
@@ -53,7 +60,9 @@ HDRS = $(CLI_DIR)/Command.hpp \
        $(ACTIONS_DIR)/ChangeSizeAction.hpp \
        $(ACTIONS_DIR)/MoveSlideAction.hpp \
        $(ACTIONS_DIR)/IAction.hpp \
-       $(SRC_DIR)/Controller.hpp \
+       $(APPLICATION_DIR)/Application.hpp \
+       $(VISUALIZATION_DIR)/Visualization.hpp \
+       $(SERIALIZATION_DIR)/Serialization.hpp \
        $(SRC_DIR)/Editor.hpp
 
 # Object files

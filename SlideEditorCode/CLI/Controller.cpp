@@ -1,11 +1,6 @@
 #include "Controller.hpp"
-
-Controller::Controller()
-{
-    _presentation = std::make_shared<Presentation>();
-    _parser = std::make_unique<Parser>(_presentation);
-    _editor = std::make_shared<Editor>(_presentation);
-}
+#include "../Application/Application.hpp"
+#include "../Models/Presentation.hpp"
 
 void Controller::startProgram()
 {
@@ -22,8 +17,8 @@ void Controller::startProgram()
                 break;
             }
 
-            std::shared_ptr<Command> command = _parser->parse(sInput);
-            command->execute(_editor);
+            std::shared_ptr<Command> command = Application::getInstance().getParser()->parse(sInput);
+            command->execute();
         } catch (const CLIException& ex) {
             std::cerr << "CLI Error: " << ex.what() << std::endl;
         } catch (const std::exception& ex) {
